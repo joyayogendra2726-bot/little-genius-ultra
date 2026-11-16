@@ -1,0 +1,3452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f59e0b" />
+  <meta name="description" content="Little Genius Ultra — Safe, ad-free offline learning world for kids (Age 3+)." />
+  <title>Little Genius Ultra — Global Kids Learning World (Age 3+)</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    html, body { overflow-x: hidden; max-width: 100%; }
+    body {
+      font-family: 'Fredoka', 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(155deg, #fffbeb 0%, #eff6ff 50%, #fdf2f8 100%);
+      min-height: 100vh;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-ui { font-family: 'Inter', system-ui, sans-serif; }
+    .kid-card {
+      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease;
+    }
+    .kid-card:active { transform: scale(0.94); }
+    @media (hover: hover) { .kid-card:hover { transform: translateY(-3px); } }
+    .pop-in { animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes popIn { 0% { transform: scale(0.82); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .float-buddy { animation: floatBuddy 2.8s ease-in-out infinite; }
+    @keyframes floatBuddy { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-7px); } }
+    .shake-no { animation: shakeNo 0.35s ease; }
+    @keyframes shakeNo { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+    #traceCanvas, #artCanvas { touch-action: none; }
+    .hidden { display: none !important; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Eye-Comfort Color Modes for Kids */
+    body.theme-pastel {
+      background: linear-gradient(155deg, #fef9e7 0%, #f0f7ff 50%, #fdf4f5 100%);
+    }
+    body.theme-eyecare {
+      background: linear-gradient(155deg, #f3f6ef 0%, #eef4ec 50%, #f7f4eb 100%);
+      filter: sepia(0.10) brightness(0.96);
+    }
+    body.theme-night {
+      background: linear-gradient(155deg, #0f172a 0%, #1e293b 100%) !important;
+      color: #f8fafc !important;
+    }
+    body.theme-night header {
+      background: rgba(15, 23, 42, 0.97) !important;
+      border-color: #334155 !important;
+    }
+    body.theme-night header h1,
+    body.theme-night header p { color: #f8fafc !important; }
+    body.theme-night .bg-white,
+    body.theme-night .bg-white\/80,
+    body.theme-night .bg-white\/70,
+    body.theme-night .bg-white\/95 {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+    body.theme-night .bg-slate-100,
+    body.theme-night .bg-slate-50,
+    body.theme-night .bg-amber-50,
+    body.theme-night .bg-amber-50\/70,
+    body.theme-night .bg-amber-100,
+    body.theme-night .bg-emerald-50,
+    body.theme-night .bg-emerald-50\/70,
+    body.theme-night .bg-emerald-100,
+    body.theme-night .bg-indigo-50,
+    body.theme-night .bg-indigo-50\/70,
+    body.theme-night .bg-pink-50\/70,
+    body.theme-night .bg-violet-50\/70,
+    body.theme-night .bg-cyan-50\/70,
+    body.theme-night .bg-sky-50,
+    body.theme-night .bg-sky-100,
+    body.theme-night .bg-rose-50,
+    body.theme-night .bg-rose-50\/40,
+    body.theme-night .bg-rose-100,
+    body.theme-night .from-sky-100 {
+      background: #334155 !important;
+      background-image: none !important;
+      color: #f8fafc !important;
+      border-color: #475569 !important;
+    }
+    body.theme-night .text-slate-800,
+    body.theme-night .text-slate-700,
+    body.theme-night .text-slate-600,
+    body.theme-night .text-indigo-900,
+    body.theme-night .text-emerald-900,
+    body.theme-night .text-amber-900,
+    body.theme-night .text-rose-900,
+    body.theme-night .text-rose-800,
+    body.theme-night .text-sky-900,
+    body.theme-night .text-sky-700,
+    body.theme-night .text-violet-700 {
+      color: #f8fafc !important;
+    }
+    body.theme-night .text-slate-500 { color: #cbd5e1 !important; }
+    body.theme-night .bg-slate-800 {
+      background-color: #f59e0b !important;
+      color: #0f172a !important;
+    }
+    body.theme-night input,
+    body.theme-night select {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      border-color: #64748b !important;
+    }
+    body.theme-night input::placeholder { color: #94a3b8 !important; }
+    body.theme-night #welcomeModal > div {
+      background-color: #1e293b !important;
+      border-color: #f59e0b !important;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased overflow-x-hidden">
+  <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 border-amber-200 shadow-sm">
+    <div class="max-w-5xl mx-auto px-2 sm:px-5 py-2 flex items-center justify-between gap-1 sm:gap-2">
+      <button id="homeBtn" type="button" class="flex items-center gap-2.5 text-left focus:outline-none">
+        <span class="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-lg sm:text-2xl shadow-md shrink-0">🦁</span>
+        <div>
+          <h1 class="text-xs sm:text-xl font-bold text-slate-800 leading-tight truncate max-w-[78px] sm:max-w-none">Little Genius</h1>
+          <p class="text-xs font-ui text-slate-500 hidden sm:block">Play • Learn • Create • Age 3+</p>
+        </div>
+      </button>
+
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <select id="headerLangSelect" aria-label="Language" class="kid-card bg-indigo-50 border-2 border-indigo-200 text-indigo-900 px-1.5 sm:px-2 py-1 rounded-full font-bold text-xs shadow-sm focus:outline-none max-w-[60px] sm:max-w-none">
+          <option value="en">🌐 EN</option>
+          <option value="gu">ગુજરાતી</option>
+          <option value="hi">हिन्दी</option>
+          <option value="mr">मराठी</option>
+          <option value="ta">தமிழ்</option>
+          <option value="te">తెలుగు</option>
+          <option value="kn">ಕನ್ನಡ</option>
+          <option value="ml">മലയാളം</option>
+          <option value="bn">বাংলা</option>
+          <option value="pa">ਪੰਜਾਬੀ</option>
+        </select>
+        <button id="dailyGiftBtn" type="button" class="kid-card flex items-center gap-1 bg-rose-100 hover:bg-rose-200 border-2 border-rose-300 text-rose-800 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-bold text-xs sm:text-sm shadow-sm">
+          <span>🎁</span><span id="giftBtnText" class="hidden sm:inline">Gift</span>
+        </button>
+        <button id="openStickersBtn" type="button" class="kid-card flex items-center gap-1 bg-amber-100 hover:bg-amber-200 border-2 border-amber-300 text-amber-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-bold text-xs sm:text-sm shadow-sm">
+          <span>⭐</span><span id="starCountDisplay">0</span>
+        </button>
+        <button id="soundToggleBtn" type="button" aria-label="Toggle Sound" class="kid-card w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-sky-100 hover:bg-sky-200 border-2 border-sky-300 flex items-center justify-center text-base sm:text-xl shadow-sm">🔊</button>
+        <button id="openParentGateBtn" type="button" aria-label="Parent Corner" class="kid-card w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 flex items-center justify-center text-sm sm:text-lg shadow-sm" title="Parents Only">🔒</button>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="max-w-5xl mx-auto px-3 sm:px-5 pb-2.5 pt-1 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <button type="button" data-view="home" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🏠 Home</button>
+      <button type="button" data-view="wordpuzzle" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🧩 Word Puzzle</button>
+      <button type="button" data-view="art" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🎨 Art Studio</button>
+      <button type="button" data-view="story" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">📖 Story</button>
+      <button type="button" data-view="abc" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🔤 ABC</button>
+      <button type="button" data-view="trace" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">✏️ Trace</button>
+      <button type="button" data-view="numbers" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🔢 123</button>
+      <button type="button" data-view="blocks" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🧱 Blocks</button>
+      <button type="button" data-view="mind" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🧠 Mind</button>
+      <button type="button" data-view="fruits" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🍓 Fruits</button>
+      <button type="button" data-view="animals" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🦁 Animals</button>
+      <button type="button" data-view="shapes" class="nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2">🔷 Shapes</button>
+    </nav>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-3 sm:px-5 py-5 pb-16">
+    <div id="toastBanner" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-40 bg-slate-900 text-white px-5 py-2.5 rounded-full shadow-xl text-sm sm:text-base font-bold flex items-center gap-2 pop-in">
+      <span id="toastIcon">✨</span><span id="toastText">Great job!</span>
+    </div>
+
+    <!-- Global Back to Home Bar (shown inside all sub-menus) -->
+    <div id="subViewBackBar" class="hidden mb-4 flex items-center justify-between">
+      <button id="subViewBackBtn" type="button" class="kid-card inline-flex items-center gap-2 bg-white border-2 border-amber-300 text-slate-800 font-bold px-4 py-2 rounded-2xl shadow-sm text-sm">
+        <span>⬅️</span><span>Back to Home</span>
+      </button>
+    </div>
+
+    <!-- ==================== HOME HUB ==================== -->
+    <section id="view-home" class="view-panel space-y-6">
+      <!-- Leo Buddy Banner -->
+      <div class="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <button id="leoBuddyBtn" type="button" class="float-buddy w-24 h-24 rounded-3xl bg-white/95 shadow-lg flex items-center justify-center shrink-0 border-4 border-amber-200">
+            <svg viewBox="0 0 120 120" class="w-20 h-20">
+              <circle cx="60" cy="60" r="46" fill="#d97706"/>
+              <circle cx="30" cy="30" r="14" fill="#fbbf24"/>
+              <circle cx="90" cy="30" r="14" fill="#fbbf24"/>
+              <circle cx="60" cy="62" r="34" fill="#fcd34d"/>
+              <circle cx="46" cy="54" r="5" fill="#1e293b"/>
+              <circle cx="74" cy="54" r="5" fill="#1e293b"/>
+              <polygon points="60,64 53,72 67,72" fill="#92400e"/>
+              <path d="M 48 79 Q 60 90 72 79" stroke="#92400e" stroke-width="4" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div>
+            <span class="inline-block px-3 py-0.5 rounded-full bg-white/25 text-xs font-ui font-bold uppercase tracking-wider mb-1">Tap Leo!</span>
+            <h2 id="leoSpeechText" class="text-2xl sm:text-3xl font-bold leading-snug">Hi! Ready for Today's Adventure?</h2>
+          </div>
+        </div>
+        <button id="leoSpeakPromptBtn" type="button" class="kid-card bg-white text-orange-600 font-bold px-5 py-3 rounded-2xl shadow-md shrink-0">🔊 Talk</button>
+      </div>
+
+      <!-- Daily Adventure Path -->
+      <div class="bg-white rounded-3xl border-4 border-indigo-200 shadow-md p-5 space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-slate-800">🗺️ Today's 3-Step Adventure</h3>
+          <span id="questProgressLabel" class="text-sm font-ui font-bold text-indigo-600">0 / 3 Done</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <button id="questStep1" type="button" data-jump="wordpuzzle" class="jump-card kid-card rounded-2xl border-2 border-indigo-200 bg-indigo-50/70 p-3.5 flex items-center justify-between">
+            <span class="font-bold text-slate-800">1. 🧩 Word Puzzle</span>
+            <span id="qBadge1" class="text-xl">⭕</span>
+          </button>
+          <button id="questStep2" type="button" data-jump="trace" class="jump-card kid-card rounded-2xl border-2 border-emerald-200 bg-emerald-50/70 p-3.5 flex items-center justify-between">
+            <span class="font-bold text-slate-800">2. ✏️ Trace a Letter</span>
+            <span id="qBadge2" class="text-xl">⭕</span>
+          </button>
+          <button id="questStep3" type="button" data-jump="art" class="jump-card kid-card rounded-2xl border-2 border-pink-200 bg-pink-50/70 p-3.5 flex items-center justify-between">
+            <span class="font-bold text-slate-800">3. 🎨 Draw & Stamp</span>
+            <span id="qBadge3" class="text-xl">⭕</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Learning Progress Bar (Parent-Friendly Overview) -->
+      <div class="bg-white rounded-3xl border-4 border-amber-200 shadow-md p-4 sm:p-5 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base sm:text-lg font-bold text-slate-800">📊 <span id="homeProgressTitle">Learning Progress</span></h3>
+          <span id="homeMasteryPct" class="text-sm font-ui font-bold text-amber-600">0%</span>
+        </div>
+        <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+          <div id="homeMasteryBar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <div class="grid grid-cols-4 gap-2 pt-1 text-center font-ui text-xs">
+          <div class="bg-indigo-50 rounded-xl p-2"><div class="font-bold text-indigo-900" id="hpWords">0/15</div><div class="text-slate-500">Words</div></div>
+          <div class="bg-emerald-50 rounded-xl p-2"><div class="font-bold text-emerald-900" id="hpLetters">0/26</div><div class="text-slate-500">Letters</div></div>
+          <div class="bg-violet-50 rounded-xl p-2"><div class="font-bold text-violet-900" id="hpNumbers">0/10</div><div class="text-slate-500">Numbers</div></div>
+          <div class="bg-pink-50 rounded-xl p-2"><div class="font-bold text-pink-900" id="hpMind">0</div><div class="text-slate-500">Puzzles</div></div>
+        </div>
+      </div>
+
+      <!-- All Worlds Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+        <button type="button" data-jump="wordpuzzle" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-indigo-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🧩</span><div><h3 class="text-lg font-bold">Word Puzzle</h3><p class="text-xs font-ui text-slate-500">Build C-A-T & words</p></div>
+        </button>
+        <button type="button" data-jump="art" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-pink-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🎨</span><div><h3 class="text-lg font-bold">Art Studio</h3><p class="text-xs font-ui text-slate-500">Paint & fun stamps</p></div>
+        </button>
+        <button type="button" data-jump="story" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-rose-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">📖</span><div><h3 class="text-lg font-bold">Story Time</h3><p class="text-xs font-ui text-slate-500">Read & tap pictures</p></div>
+        </button>
+        <button type="button" data-jump="abc" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-sky-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🔤</span><div><h3 class="text-lg font-bold">ABC Phonics</h3><p class="text-xs font-ui text-slate-500">A-Z letters & sounds</p></div>
+        </button>
+        <button type="button" data-jump="trace" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-emerald-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">✏️</span><div><h3 class="text-lg font-bold">Letter Trace</h3><p class="text-xs font-ui text-slate-500">Finger writing</p></div>
+        </button>
+        <button type="button" data-jump="numbers" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-violet-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🔢</span><div><h3 class="text-lg font-bold">123 Count</h3><p class="text-xs font-ui text-slate-500">Count 1-10 aloud</p></div>
+        </button>
+        <button type="button" data-jump="blocks" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-cyan-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🧱</span><div><h3 class="text-lg font-bold">Block Builder</h3><p class="text-xs font-ui text-slate-500">House & Rocket</p></div>
+        </button>
+        <button type="button" data-jump="mind" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-amber-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🧠</span><div><h3 class="text-lg font-bold">Mind Games</h3><p class="text-xs font-ui text-slate-500">Patterns & Memory</p></div>
+        </button>
+        <button type="button" data-jump="fruits" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-orange-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🍓</span><div><h3 class="text-lg font-bold">Fruits & Nuts</h3><p class="text-xs font-ui text-slate-500">Fresh & Dry Fruits</p></div>
+        </button>
+        <button type="button" data-jump="animals" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-lime-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🦁</span><div><h3 class="text-lg font-bold">Animal Sounds</h3><p class="text-xs font-ui text-slate-500">Roar, Moo & Quiz</p></div>
+        </button>
+        <button type="button" data-jump="shapes" class="jump-card kid-card text-left bg-white rounded-3xl border-4 border-teal-200 p-4 shadow-md flex flex-col gap-2">
+          <span class="text-4xl">🔷</span><div><h3 class="text-lg font-bold">Shapes & Colors</h3><p class="text-xs font-ui text-slate-500">Learn & Find</p></div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== WORD PUZZLE ==================== -->
+    <section id="view-wordpuzzle" class="view-panel hidden space-y-5">
+      <div class="bg-white rounded-3xl border-4 border-indigo-200 shadow-lg p-5 sm:p-6 space-y-6 text-center">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-slate-800">Word Puzzle 🧩</h2>
+          <button id="wpSpeakBtn" type="button" class="kid-card bg-indigo-500 text-white font-bold px-4 py-2 rounded-2xl shadow-sm">🔊 Hear Word</button>
+        </div>
+        <div class="text-7xl sm:text-8xl" id="wpEmoji">🐱</div>
+        <div id="wpSlots" class="flex items-center justify-center gap-3"></div>
+        <p class="text-sm font-ui text-slate-500">Tap the letters in order to spell the word!</p>
+        <div id="wpLetters" class="flex flex-wrap items-center justify-center gap-3"></div>
+        <div class="flex items-center justify-between pt-2">
+          <span id="wpFeedback" class="font-bold text-slate-600">Tap the first letter!</span>
+          <button id="wpNextBtn" type="button" class="hidden kid-card bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-2xl shadow-sm">Next Word ➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ART & STAMP STUDIO ==================== -->
+    <section id="view-art" class="view-panel hidden space-y-4">
+      <div class="bg-white rounded-3xl border-4 border-pink-200 shadow-lg p-4 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-800">Art & Stamp Studio 🎨</h2>
+            <p class="text-xs font-ui text-slate-500">Draw freely or tap a stamp and tap the canvas!</p>
+          </div>
+          <div class="flex gap-2">
+            <button id="artClearBtn" type="button" class="kid-card bg-rose-100 border-2 border-rose-300 text-rose-800 font-bold px-3.5 py-2 rounded-xl text-sm">🧹 Clear</button>
+            <button id="artDoneBtn" type="button" class="kid-card bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-sm shadow-sm">⭐ Finish!</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-pink-50/70 p-3 rounded-2xl border-2 border-pink-100">
+          <div id="artColorRow" class="flex items-center gap-2"></div>
+          <div id="artStampRow" class="flex items-center gap-1.5"></div>
+        </div>
+        <div class="relative w-full h-72 sm:h-80 bg-white rounded-3xl border-4 border-dashed border-pink-200 overflow-hidden shadow-inner">
+          <canvas id="artCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STORY TIME ==================== -->
+    <section id="view-story" class="view-panel hidden space-y-5">
+      <div class="bg-white rounded-3xl border-4 border-rose-200 shadow-lg p-5 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2"><h2 id="storyTitle" class="text-2xl font-bold">Leo's Picnic 📖</h2><button id="storyReadBtn" type="button" class="kid-card bg-rose-500 text-white font-bold px-4 py-2 rounded-2xl">🔊 Read</button></div>
+        <div id="storyTabs" class="flex flex-wrap gap-2"></div>
+        <div class="bg-gradient-to-b from-sky-100 to-emerald-100 rounded-3xl p-6 text-center space-y-4">
+          <div id="storySceneIcons" class="flex items-center justify-center gap-4 text-6xl"></div>
+          <p id="storyCaption" class="text-xl sm:text-2xl font-bold text-slate-800"></p>
+        </div>
+        <div class="flex items-center justify-between">
+          <button id="storyPrevBtn" type="button" class="kid-card bg-slate-100 border-2 border-slate-300 font-bold px-5 py-2 rounded-2xl">⬅️ Back</button>
+          <span id="storyPageNum" class="font-bold text-slate-600">Page 1 of 4</span>
+          <button id="storyNextBtn" type="button" class="kid-card bg-rose-500 text-white font-bold px-5 py-2 rounded-2xl">Next ➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ABC VIEW ==================== -->
+    <section id="view-abc" class="view-panel hidden space-y-5">
+      <div class="bg-white rounded-3xl border-4 border-sky-200 shadow-lg p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div id="abcBigBox" class="w-24 h-24 rounded-3xl bg-gradient-to-br from-sky-400 to-blue-500 text-white flex items-center justify-center text-5xl font-bold shadow-md">Aa</div>
+          <div><div class="flex items-center gap-2"><span id="abcEmoji" class="text-4xl">🍎</span><h2 id="abcWord" class="text-3xl font-bold">Apple</h2></div><p id="abcPhonics" class="text-base text-sky-700 font-semibold">A is for Apple!</p></div>
+        </div>
+        <button id="abcSpeakBtn" type="button" class="kid-card w-full sm:w-auto bg-sky-500 text-white font-bold px-6 py-3 rounded-2xl text-lg">🔊 Listen</button>
+      </div>
+      <div id="abcGrid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 gap-2.5"></div>
+    </section>
+
+    <!-- ==================== TRACE VIEW ==================== -->
+    <section id="view-trace" class="view-panel hidden space-y-5">
+      <div class="bg-white rounded-3xl border-4 border-emerald-200 shadow-lg p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-2xl font-bold">Trace the Letter ✏️</h2>
+          <div class="flex items-center gap-2">
+            <button id="tracePrevBtn" type="button" class="kid-card bg-slate-100 border-2 border-slate-300 px-3 py-1.5 rounded-xl font-bold">⬅️</button>
+            <span id="traceCurrentLabel" class="px-4 py-1.5 rounded-xl bg-emerald-100 text-emerald-900 font-bold text-xl border-2 border-emerald-300">A</span>
+            <button id="traceNextBtn" type="button" class="kid-card bg-slate-100 border-2 border-slate-300 px-3 py-1.5 rounded-xl font-bold">➡️</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div id="tracePalette" class="flex items-center gap-2"></div>
+          <div class="flex gap-2">
+            <button id="traceClearBtn" type="button" class="kid-card bg-rose-100 border-2 border-rose-300 text-rose-800 font-bold px-4 py-2 rounded-xl">🧹 Clear</button>
+            <button id="traceDoneBtn" type="button" class="kid-card bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl">⭐ Done!</button>
+          </div>
+        </div>
+        <div class="relative w-full max-w-md mx-auto aspect-square bg-amber-50/70 rounded-3xl border-4 border-dashed border-emerald-300 overflow-hidden">
+          <canvas id="traceCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== NUMBERS VIEW ==================== -->
+    <section id="view-numbers" class="view-panel hidden space-y-5">
+      <div class="bg-white rounded-3xl border-4 border-violet-200 shadow-lg p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-4"><div id="numBigBadge" class="w-20 h-20 rounded-3xl bg-gradient-to-br from-violet-500 to-purple-600 text-white flex items-center justify-center text-5xl font-bold">3</div><div><h2 id="numWordTitle" class="text-3xl font-bold">Three</h2><p class="text-sm font-ui text-slate-500">Tap objects to count!</p></div></div>
+          <button id="numCountAloudBtn" type="button" class="kid-card bg-violet-500 text-white font-bold px-5 py-3 rounded-2xl">🔊 Count Aloud</button>
+        </div>
+        <div id="numObjectsArea" class="min-h-[110px] bg-violet-50/70 rounded-2xl border-2 border-violet-200 p-4 flex flex-wrap items-center justify-center gap-3"></div>
+      </div>
+      <div id="numGrid" class="grid grid-cols-5 gap-2.5"></div>
+    </section>
+
+    <!-- ==================== BLOCKS VIEW ==================== -->
+    <section id="view-blocks" class="view-panel hidden space-y-4">
+      <div class="bg-white rounded-3xl border-4 border-cyan-200 shadow-lg p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-2xl font-bold">Block Builder 🧱</h2>
+          <div class="flex gap-2">
+            <button type="button" data-bp="free" class="bp-btn kid-card px-3 py-1.5 rounded-xl font-bold text-sm border-2 bg-cyan-500 text-white border-cyan-600">✨ Free</button>
+            <button type="button" data-bp="house" class="bp-btn kid-card px-3 py-1.5 rounded-xl font-bold text-sm border-2 bg-white text-slate-700 border-slate-200">🏠 House</button>
+            <button type="button" data-bp="rocket" class="bp-btn kid-card px-3 py-1.5 rounded-xl font-bold text-sm border-2 bg-white text-slate-700 border-slate-200">🚀 Rocket</button>
+            <button type="button" data-bp="tree" class="bp-btn kid-card px-3 py-1.5 rounded-xl font-bold text-sm border-2 bg-white text-slate-700 border-slate-200">🌳 Tree</button>
+            <button type="button" data-bp="train" class="bp-btn kid-card px-3 py-1.5 rounded-xl font-bold text-sm border-2 bg-white text-slate-700 border-slate-200">🚂 Train</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-cyan-50/70 p-3 rounded-2xl border-2 border-cyan-100">
+          <div id="blockPalette" class="flex flex-wrap gap-2"></div>
+          <div class="flex gap-2"><button id="blockClearBtn" type="button" class="kid-card px-3 py-2 rounded-xl font-bold text-sm bg-rose-100 border-2 border-rose-300 text-rose-800">🧹 Clear</button><button id="blockFinishBtn" type="button" class="kid-card px-3.5 py-2 rounded-xl font-bold text-sm bg-emerald-500 text-white">⭐ Finish!</button></div>
+        </div>
+        <div id="builderGrid" class="grid grid-cols-6 gap-1.5 sm:gap-2 max-w-lg mx-auto bg-sky-50 p-3 rounded-3xl border-4 border-sky-200"></div>
+      </div>
+    </section>
+
+    <!-- ==================== MIND GAMES VIEW ==================== -->
+    <section id="view-mind" class="view-panel hidden space-y-5">
+      <div class="flex flex-wrap gap-2">
+        <button id="mindTabPattern" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-amber-500 text-white border-amber-600">🚂 Pattern Train</button>
+        <button id="mindTabOdd" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-white text-slate-700 border-slate-200">🔍 Odd One Out</button>
+        <button id="mindTabMemory" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-white text-slate-700 border-slate-200">🃏 Memory Match</button>
+      </div>
+      <div id="mindPatternPanel" class="bg-white rounded-3xl border-4 border-amber-200 shadow-lg p-5 space-y-5">
+        <h2 class="text-2xl font-bold">What comes next? 🚂</h2>
+        <div id="patternRow" class="bg-amber-50 rounded-2xl p-4 flex flex-wrap items-center justify-center gap-2"></div>
+        <div id="patternOpts" class="grid grid-cols-3 gap-3 max-w-md mx-auto"></div>
+        <div class="flex items-center justify-between"><span id="patternMsg" class="font-bold text-slate-600">Tap the missing piece!</span><button id="patternNextBtn" type="button" class="hidden kid-card bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl">Next ➡️</button></div>
+      </div>
+      <div id="mindOddPanel" class="hidden bg-white rounded-3xl border-4 border-rose-200 shadow-lg p-5 space-y-5">
+        <h2 class="text-2xl font-bold">Find the Odd One Out! 🔍</h2>
+        <div id="oddGrid" class="grid grid-cols-2 gap-3 max-w-md mx-auto"></div>
+        <div class="flex items-center justify-between"><span id="oddMsg" class="font-bold text-slate-600">Which one is different?</span><button id="oddNextBtn" type="button" class="hidden kid-card bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl">Next ➡️</button></div>
+      </div>
+      <div id="mindMemoryPanel" class="hidden bg-white rounded-3xl border-4 border-purple-200 shadow-lg p-5 space-y-4">
+        <div class="flex items-center justify-between"><h2 class="text-2xl font-bold">Memory Match 🃏</h2><button id="memoryRestartBtn" type="button" class="kid-card bg-purple-500 text-white font-bold px-4 py-2 rounded-xl">🔄 New Game</button></div>
+        <div id="memoryGrid" class="grid grid-cols-3 gap-3 max-w-md mx-auto"></div>
+      </div>
+    </section>
+
+    <!-- ==================== FRUITS & DRY FRUITS VIEW ==================== -->
+    <section id="view-fruits" class="view-panel hidden space-y-5">
+      <div class="flex flex-wrap gap-2">
+        <button id="subFreshBtn" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-orange-500 text-white border-orange-600">🍎 Fresh Fruits</button>
+        <button id="subDryBtn" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-white text-slate-700 border-slate-200">🥜 Dry Fruits & Nuts</button>
+        <button id="subSortBtn" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-white text-slate-700 border-slate-200">🧺 Basket Sort</button>
+      </div>
+      <div id="fruitsListPanel" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      <div id="dryListPanel" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      <div id="fruitSortPanel" class="hidden bg-white rounded-3xl border-4 border-emerald-200 shadow-lg p-5 space-y-5 text-center">
+        <h2 class="text-2xl font-bold">Fresh Fruit or Dry Fruit? 🧺</h2>
+        <div class="w-36 h-36 mx-auto rounded-3xl bg-emerald-50 border-4 border-emerald-300 flex flex-col items-center justify-center gap-1"><span id="sortIcon" class="text-6xl">🥭</span><span id="sortName" class="text-xl font-bold">Mango</span></div>
+        <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+          <button id="sortFreshBtn" type="button" class="kid-card rounded-3xl border-4 border-rose-300 bg-rose-50 p-5 flex flex-col items-center gap-1"><span class="text-4xl">🧺</span><span class="font-bold text-rose-900">Fresh Fruit</span></button>
+          <button id="sortDryBtn" type="button" class="kid-card rounded-3xl border-4 border-amber-400 bg-amber-50 p-5 flex flex-col items-center gap-1"><span class="text-4xl">🫙</span><span class="font-bold text-amber-900">Dry Fruit</span></button>
+        </div>
+      </div>
+    </section>
+    <!-- ==================== ANIMALS & SOUNDS VIEW ==================== -->
+    <section id="view-animals" class="view-panel hidden space-y-5">
+      <div class="flex flex-wrap gap-2">
+        <button id="aniTabLearn" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-lime-500 text-white border-lime-600">🐾 Meet Animals</button>
+        <button id="aniTabQuiz" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-white text-slate-700 border-slate-200">🔊 Sound Quiz</button>
+      </div>
+      <div id="aniLearnGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      <div id="aniQuizPanel" class="hidden bg-white rounded-3xl border-4 border-lime-200 shadow-lg p-5 space-y-5 text-center">
+        <h2 class="text-2xl font-bold">Who makes this sound? 🐾</h2>
+        <button id="aniQuizSpeakBtn" type="button" class="kid-card mx-auto bg-lime-500 text-white font-bold px-6 py-3 rounded-2xl text-lg shadow-sm">🔊 Hear Sound</button>
+        <p id="aniQuizPrompt" class="text-xl font-bold text-slate-700">"Roar!"</p>
+        <div id="aniQuizOpts" class="grid grid-cols-3 gap-3 max-w-md mx-auto"></div>
+      </div>
+    </section>
+
+    <!-- ==================== SHAPES & COLORS VIEW ==================== -->
+    <section id="view-shapes" class="view-panel hidden space-y-5">
+      <div class="flex flex-wrap gap-2">
+        <button id="shpTabShapes" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-teal-500 text-white border-teal-600">🔷 Shapes</button>
+        <button id="shpTabColors" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-white text-slate-700 border-slate-200">🎨 Colors</button>
+        <button id="shpTabQuiz" type="button" class="kid-card px-4 py-2 rounded-2xl font-bold border-2 bg-white text-slate-700 border-slate-200">🎯 Find It!</button>
+      </div>
+      <div id="shpShapesGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+      <div id="shpColorsGrid" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+      <div id="shpQuizPanel" class="hidden bg-white rounded-3xl border-4 border-teal-200 shadow-lg p-5 space-y-5 text-center">
+        <h2 class="text-2xl font-bold">Tap the <span id="shpQuizTargetName" class="text-teal-600">Circle</span>! 🎯</h2>
+        <div id="shpQuizOpts" class="grid grid-cols-3 gap-3 max-w-md mx-auto"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Welcome & Kid Setup Modal -->
+  <div id="welcomeModal" class="hidden fixed inset-0 z-50 bg-amber-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#fffdf7] rounded-3xl border-4 border-amber-300 shadow-2xl max-w-md w-full p-6 space-y-5 pop-in text-center">
+      <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-amber-300 to-orange-400 flex items-center justify-center text-5xl shadow-md">🦁</div>
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Welcome to Little Genius!</h2>
+        <p class="text-sm font-ui text-slate-500 mt-1">Let&apos;s set up your child&apos;s profile &amp; eye-safe colors</p>
+      </div>
+      <div class="space-y-3 text-left font-ui">
+        <div>
+          <label for="welcomeLangSelect" id="wLangLbl" class="block text-sm font-bold text-slate-700 mb-1">Language</label>
+          <select id="welcomeLangSelect" class="w-full rounded-2xl border-2 border-amber-200 bg-white px-4 py-2 text-sm font-bold text-slate-800">
+            <option value="en">English</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+          </select>
+        </div>
+        <div>
+          <label for="welcomeNameInput" id="wNameLbl" class="block text-sm font-bold text-slate-700 mb-1">Child&apos;s Name</label>
+          <input id="welcomeNameInput" type="text" maxlength="20" placeholder="Enter name (e.g. Aarav)" class="w-full rounded-2xl border-2 border-amber-200 bg-white px-4 py-2.5 text-base font-bold text-slate-800 focus:outline-none focus:border-amber-400" />
+        </div>
+        <div>
+          <span class="block text-sm font-bold text-slate-700 mb-1">Child&apos;s Age</span>
+          <div id="welcomeAgeGroup" class="grid grid-cols-3 gap-2">
+            <button type="button" data-age="3" class="age-opt py-2 rounded-xl border-2 border-amber-500 bg-amber-100 text-amber-900 font-bold text-sm">3 Years</button>
+            <button type="button" data-age="4" class="age-opt py-2 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-sm">4 Years</button>
+            <button type="button" data-age="5+" class="age-opt py-2 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-sm">5+ Years</button>
+          </div>
+        </div>
+        <div>
+          <span class="block text-sm font-bold text-slate-700 mb-1">Eye-Comfort Color Mode</span>
+          <div id="welcomeThemeGroup" class="grid grid-cols-3 gap-2">
+            <button type="button" data-theme="pastel" class="theme-opt py-2 rounded-xl border-2 border-amber-500 bg-amber-50 text-slate-800 font-bold text-xs">☀️ Soft Pastel</button>
+            <button type="button" data-theme="eyecare" class="theme-opt py-2 rounded-xl border-2 border-slate-200 bg-[#eef4ec] text-slate-800 font-bold text-xs">🌿 Eye-Care</button>
+            <button type="button" data-theme="night" class="theme-opt py-2 rounded-xl border-2 border-slate-200 bg-slate-800 text-white font-bold text-xs">🌙 Night</button>
+          </div>
+        </div>
+      </div>
+      <p id="welcomeError" class="hidden text-xs font-ui font-bold text-rose-600">Please enter your child&apos;s name to continue!</p>
+      <button id="welcomeStartBtn" type="button" class="kid-card w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-lg shadow-md">Start Learning! 🚀</button>
+    </div>
+  </div>
+
+  <!-- Stickers Modal -->
+  <div id="stickersModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl border-4 border-amber-300 shadow-2xl max-w-md w-full p-6 space-y-4 pop-in">
+      <div class="flex items-center justify-between"><h3 class="text-2xl font-bold">🏆 My Sticker Book</h3><button id="closeStickersBtn" type="button" class="w-9 h-9 rounded-full bg-slate-100 font-bold">✕</button></div>
+      <div id="stickersGrid" class="grid grid-cols-3 gap-3"></div>
+    </div>
+  </div>
+
+  <!-- Parental Gate Modal -->
+  <div id="parentGateModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 font-ui">
+    <div class="bg-white rounded-3xl border-2 border-slate-200 shadow-2xl max-w-sm w-full p-6 space-y-4 pop-in">
+      <div class="flex items-center justify-between"><h3 class="text-lg font-bold">🔒 Parents Only</h3><button id="closeGateBtn" type="button" class="w-8 h-8 rounded-full bg-slate-100 font-bold">✕</button></div>
+      <p id="gateQuestion" class="text-xl font-bold text-center bg-slate-100 py-3 rounded-xl">What is 4 + 3?</p>
+      <input id="gateInput" type="number" placeholder="Answer" class="w-full rounded-xl border-2 border-slate-300 px-3 py-2 text-center text-lg font-bold" />
+      <p id="gateError" class="hidden text-xs text-rose-600 font-semibold text-center">Try again.</p>
+      <button id="gateSubmitBtn" type="button" class="w-full py-2.5 rounded-xl bg-slate-800 text-white font-semibold">Unlock</button>
+    </div>
+  </div>
+
+  <!-- Parent Corner Modal -->
+  <div id="parentModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 font-ui">
+    <div class="bg-white rounded-3xl border-2 border-slate-200 shadow-2xl max-w-md w-full p-6 space-y-4 pop-in">
+      <div class="flex items-center justify-between"><h3 class="text-xl font-bold">⚙️ Parent Corner & Safety</h3><button id="closeParentBtn" type="button" class="w-9 h-9 rounded-full bg-slate-100 font-bold">✕</button></div>
+      <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-xs text-emerald-900"><p class="font-bold">Play Store Ready & Kid-Safe:</p><p>Zero personal data collected, offline-capable, Parental Gate protected, zero ads.</p></div>
+      <div class="bg-slate-50 rounded-2xl p-3.5 border space-y-2.5 text-sm">
+        <div class="flex justify-between items-center border-b pb-2">
+          <span class="font-bold text-slate-700" id="parentReportHeader">📊 Progress Report</span>
+          <span id="parentStarsStat" class="font-bold text-amber-600">0 ⭐</span>
+        </div>
+        <div class="space-y-1.5 text-xs">
+          <div><div class="flex justify-between mb-0.5"><span>📖 Reading &amp; Words</span><span id="prWordsTxt" class="font-bold">0/15</span></div><div class="h-2 bg-slate-200 rounded-full overflow-hidden"><div id="prWordsBar" class="h-full bg-indigo-500 rounded-full" style="width:0%"></div></div></div>
+          <div><div class="flex justify-between mb-0.5"><span>✏️ Writing &amp; Letters</span><span id="prLettersTxt" class="font-bold">0/26</span></div><div class="h-2 bg-slate-200 rounded-full overflow-hidden"><div id="prLettersBar" class="h-full bg-emerald-500 rounded-full" style="width:0%"></div></div></div>
+          <div><div class="flex justify-between mb-0.5"><span>🔢 Numbers &amp; Logic</span><span id="prMathTxt" class="font-bold">0/10</span></div><div class="h-2 bg-slate-200 rounded-full overflow-hidden"><div id="prMathBar" class="h-full bg-violet-500 rounded-full" style="width:0%"></div></div></div>
+          <div class="flex justify-between pt-1 text-slate-600"><span>🎨 Artworks: <strong id="prArtCount">0</strong></span><span>📖 Stories: <strong id="prStoryCount">0</strong></span><span>🧠 Puzzles: <strong id="prMindCount">0</strong></span></div>
+        </div>
+        <button id="copyReportBtn" type="button" class="w-full py-1.5 rounded-xl bg-emerald-600 text-white font-semibold text-xs">📋 Copy Progress Report</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label for="parentChildName" class="block text-xs font-semibold text-slate-700 mb-1">Child Name</label>
+          <input id="parentChildName" type="text" maxlength="20" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white text-slate-800" />
+        </div>
+        <div>
+          <label for="parentChildAge" class="block text-xs font-semibold text-slate-700 mb-1">Age</label>
+          <select id="parentChildAge" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white text-slate-800"><option value="3">3 Years</option><option value="4">4 Years</option><option value="5+">5+ Years</option></select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label for="speechRateSelect" class="block text-xs font-semibold text-slate-700 mb-1">Voice Speed</label>
+          <select id="speechRateSelect" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white text-slate-800"><option value="0.72">Slow (Age 3)</option><option value="0.88" selected>Gentle Normal</option><option value="1.05">Standard</option></select>
+        </div>
+        <div>
+          <label for="themeModeSelect" class="block text-xs font-semibold text-slate-700 mb-1">Eye-Comfort Color</label>
+          <select id="themeModeSelect" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white text-slate-800"><option value="pastel">☀️ Soft Pastel</option><option value="eyecare">🌿 Eye-Care</option><option value="night">🌙 Night Mode</option></select>
+        </div>
+      </div>
+      <div>
+        <label for="parentLangSelect" id="pLangLbl" class="block text-xs font-semibold text-slate-700 mb-1">Language</label>
+        <select id="parentLangSelect" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white text-slate-800">
+          <option value="en">English</option>
+          <option value="gu">ગુજરાતી (Gujarati)</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="mr">मराठी (Marathi)</option>
+          <option value="ta">தமிழ் (Tamil)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+          <option value="kn">ಕನ್ನಡ (Kannada)</option>
+          <option value="ml">മലയാളം (Malayalam)</option>
+          <option value="bn">বাংলা (Bengali)</option>
+          <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+        </select>
+      </div>
+      <div class="pt-1 grid grid-cols-2 gap-2">
+        <button id="openWelcomeFromParentBtn" type="button" class="w-full text-center py-2 rounded-xl border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-sm">👋 Welcome Setup</button>
+        <a href="./privacy.html" class="block w-full text-center py-2 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 font-semibold text-sm">📄 Privacy Policy</a>
+      </div>
+      <div class="pt-1 flex justify-between gap-3"><button id="resetProgressBtn" type="button" class="px-4 py-2 rounded-xl bg-rose-100 text-rose-700 font-semibold text-sm">Reset Stars</button><button id="saveParentBtn" type="button" class="px-5 py-2 rounded-xl bg-slate-800 text-white font-semibold text-sm">Done</button></div>
+    </div>
+  </div>
+
+  <script>
+window.I18N = {
+  "en": {
+    "name": "English",
+    "tts": "en-US",
+    "short": "EN",
+    "subtitle": "Play • Learn • Create • Age 3+",
+    "gift": "Gift",
+    "backHome": "Back to Home",
+    "talk": "Talk",
+    "tapLeo": "Tap Leo!",
+    "leoGreet": "Hi {name}! Ready for Today's Adventure?",
+    "leoDefault": "Hi! Ready for Today's Adventure?",
+    "adventureTitle": "Today's 3-Step Adventure",
+    "done": "Done",
+    "step1": "1. 🧩 Word Puzzle",
+    "step2": "2. ✏️ Trace a Letter",
+    "step3": "3. 🎨 Draw & Stamp",
+    "progressTitle": "{name}'s Learning Progress",
+    "progressDefault": "Learning Progress",
+    "wordsLbl": "Words",
+    "lettersLbl": "Letters",
+    "numbersLbl": "Numbers",
+    "puzzlesLbl": "Puzzles",
+    "nav": {
+      "home": "🏠 Home",
+      "wordpuzzle": "🧩 Word Puzzle",
+      "art": "🎨 Art Studio",
+      "story": "📖 Story",
+      "abc": "🔤 ABC",
+      "trace": "✏️ Trace",
+      "numbers": "🔢 123",
+      "blocks": "🧱 Blocks",
+      "mind": "🧠 Mind",
+      "fruits": "🍓 Fruits",
+      "animals": "🦁 Animals",
+      "shapes": "🔷 Shapes"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "Word Puzzle",
+        "Build C-A-T & words"
+      ],
+      "art": [
+        "Art Studio",
+        "Paint & fun stamps"
+      ],
+      "story": [
+        "Story Time",
+        "Read & tap pictures"
+      ],
+      "abc": [
+        "ABC Phonics",
+        "A-Z letters & sounds"
+      ],
+      "trace": [
+        "Letter Trace",
+        "Finger writing"
+      ],
+      "numbers": [
+        "123 Count",
+        "Count 1-10 aloud"
+      ],
+      "blocks": [
+        "Block Builder",
+        "House & Rocket"
+      ],
+      "mind": [
+        "Mind Games",
+        "Patterns & Memory"
+      ],
+      "fruits": [
+        "Fruits & Nuts",
+        "Fresh & Dry Fruits"
+      ],
+      "animals": [
+        "Animal Sounds",
+        "Roar, Moo & Quiz"
+      ],
+      "shapes": [
+        "Shapes & Colors",
+        "Learn & Find"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "Welcome to Little Genius!",
+      "welcomeSub": "Set language, profile & eye-safe colors",
+      "langLbl": "Language",
+      "nameLbl": "Child's Name",
+      "namePh": "Enter name (e.g. Aarav)",
+      "ageLbl": "Child's Age",
+      "themeLbl": "Eye-Comfort Color Mode",
+      "startBtn": "Start Learning! 🚀",
+      "nameErr": "Please enter your child's name to continue!",
+      "parentsOnly": "🔒 Parents Only",
+      "unlock": "Unlock",
+      "tryAgain": "Try again.",
+      "parentCorner": "⚙️ Parent Corner & Safety",
+      "copyReport": "📋 Copy Progress Report",
+      "welcomeSetup": "👋 Welcome Setup",
+      "privacy": "📄 Privacy Policy",
+      "resetStars": "Reset Stars",
+      "doneBtn": "Done",
+      "voiceSpeed": "Voice Speed",
+      "eyeColor": "Eye-Comfort Color",
+      "hearWord": "🔊 Hear Word",
+      "tapFirst": "Tap the first letter!",
+      "nextWord": "Next Word ➡️",
+      "clear": "🧹 Clear",
+      "finish": "⭐ Finish!",
+      "doneStar": "⭐ Done!",
+      "read": "🔊 Read",
+      "back": "⬅️ Back",
+      "next": "Next ➡️",
+      "listen": "🔊 Listen",
+      "countAloud": "🔊 Count Aloud",
+      "tapObjects": "Tap objects to count!",
+      "whatNext": "What comes next? 🚂",
+      "oddOut": "Find the Odd One Out! 🔍",
+      "memMatch": "Memory Match 🃏",
+      "newGame": "🔄 New Game",
+      "freshFruits": "🍎 Fresh Fruits",
+      "dryFruits": "🥜 Dry Fruits & Nuts",
+      "basketSort": "🧺 Basket Sort",
+      "freshOrDry": "Fresh Fruit or Dry Fruit? 🧺",
+      "freshBtn": "Fresh Fruit",
+      "dryBtn": "Dry Fruit",
+      "meetAnimals": "🐾 Meet Animals",
+      "soundQuiz": "🔊 Sound Quiz",
+      "whoSound": "Who makes this sound? 🐾",
+      "hearSound": "🔊 Hear Sound",
+      "shapesTab": "🔷 Shapes",
+      "colorsTab": "🎨 Colors",
+      "findItTab": "🎯 Find It!",
+      "tapThe": "Tap the",
+      "stickerBook": "🏆 My Sticker Book"
+    },
+    "numWords": [
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Ten"
+    ],
+    "fruits": [
+      "Apple",
+      "Banana",
+      "Mango",
+      "Grapes",
+      "Orange",
+      "Watermelon",
+      "Strawberry",
+      "Pineapple"
+    ],
+    "dryFruits": [
+      "Almond",
+      "Cashew",
+      "Walnut",
+      "Pistachio",
+      "Peanut",
+      "Date"
+    ],
+    "animals": [
+      "Lion",
+      "Cow",
+      "Dog",
+      "Cat",
+      "Duck",
+      "Frog",
+      "Sheep",
+      "Elephant",
+      "Monkey",
+      "Rooster",
+      "Bee",
+      "Owl"
+    ],
+    "shapes": [
+      "Circle",
+      "Square",
+      "Triangle",
+      "Star",
+      "Heart",
+      "Diamond",
+      "Oval",
+      "Crescent"
+    ],
+    "colors": [
+      "Red",
+      "Blue",
+      "Yellow",
+      "Green",
+      "Orange",
+      "Purple",
+      "Pink",
+      "Brown"
+    ]
+  },
+  "gu": {
+    "name": "ગુજરાતી (Gujarati)",
+    "tts": "gu-IN",
+    "short": "ગુ",
+    "subtitle": "રમો • શીખો • બનાવો • ઉંમર 3+",
+    "gift": "ભેટ",
+    "backHome": "હોમ પર જાઓ",
+    "talk": "વાત કરો",
+    "tapLeo": "લિયોને ટચ કરો!",
+    "leoGreet": "નમસ્તે {name}! આજના સાહસ માટે તૈયાર છો?",
+    "leoDefault": "નમસ્તે! આજના સાહસ માટે તૈયાર છો?",
+    "adventureTitle": "આજના 3 સરળ પગલાં",
+    "done": "પૂર્ણ",
+    "step1": "1. 🧩 શબ્દ પઝલ",
+    "step2": "2. ✏️ અક્ષર લખો",
+    "step3": "3. 🎨 ચિત્ર દોરો",
+    "progressTitle": "{name} ની પ્રગતિ",
+    "progressDefault": "શીખવાની પ્રગતિ",
+    "wordsLbl": "શબ્દો",
+    "lettersLbl": "અક્ષરો",
+    "numbersLbl": "અંકો",
+    "puzzlesLbl": "પઝલ",
+    "nav": {
+      "home": "🏠 હોમ",
+      "wordpuzzle": "🧩 શબ્દ પઝલ",
+      "art": "🎨 આર્ટ સ્ટુડિયો",
+      "story": "📖 વાર્તા",
+      "abc": "🔤 ABC",
+      "trace": "✏️ ટ્રેસ",
+      "numbers": "🔢 ૧૨૩ ગણતરી",
+      "blocks": "🧱 બ્લોક્સ",
+      "mind": "🧠 મગજની રમત",
+      "fruits": "🍓 ફળો",
+      "animals": "🦁 પ્રાણીઓ",
+      "shapes": "🔷 આકારો"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "શબ્દ પઝલ",
+        "શબ્દો બનાવો"
+      ],
+      "art": [
+        "આર્ટ સ્ટુડિયો",
+        "રંગ અને સ્ટેમ્પ"
+      ],
+      "story": [
+        "વાર્તાનો સમય",
+        "વાંચો અને સાંભળો"
+      ],
+      "abc": [
+        "ABC ફોનિક્સ",
+        "A-Z અક્ષરો અને અવાજ"
+      ],
+      "trace": [
+        "અક્ષર ટ્રેસ",
+        "આંગળીથી લખો"
+      ],
+      "numbers": [
+        "૧૨૩ ગણતરી",
+        "૧ થી ૧૦ બોલીને ગણો"
+      ],
+      "blocks": [
+        "બ્લોક બિલ્ડર",
+        "ઘર અને રોકેટ બનાવો"
+      ],
+      "mind": [
+        "મગજની રમત",
+        "પેટર્ન અને મેમરી"
+      ],
+      "fruits": [
+        "ફળો અને સૂકા મેવા",
+        "તાજા ફળ અને ડ્રાયફ્રુટ"
+      ],
+      "animals": [
+        "પ્રાણીઓના અવાજ",
+        "ઓળખો અને ક્વિઝ રમો"
+      ],
+      "shapes": [
+        "આકાર અને રંગો",
+        "શીખો અને શોધો"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "લિટલ જીનિયસમાં સ્વાગત છે!",
+      "welcomeSub": "ભાષા, બાળકનું નામ અને આંખો માટે સુરક્ષિત રંગ પસંદ કરો",
+      "langLbl": "ભાષા (Language)",
+      "nameLbl": "બાળકનું નામ",
+      "namePh": "નામ લખો (દા.ત. આરવ)",
+      "ageLbl": "બાળકની ઉંમર",
+      "themeLbl": "આંખો માટે કલર મોડ",
+      "startBtn": "શીખવાનું શરૂ કરો! 🚀",
+      "nameErr": "કૃપા કરીને આગળ વધવા માટે બાળકનું નામ લખો!",
+      "parentsOnly": "🔒 ફક્ત માતા-પિતા માટે",
+      "unlock": "ખોલો",
+      "tryAgain": "ફરી પ્રયત્ન કરો.",
+      "parentCorner": "⚙️ પેરેન્ટ કોર્નર અને રિપોર્ટ",
+      "copyReport": "📋 રિપોર્ટ કોપી કરો",
+      "welcomeSetup": "👋 વેલકમ સેટઅપ",
+      "privacy": "📄 પ્રાઇવસી પોલિસી",
+      "resetStars": "સ્ટાર રીસેટ",
+      "doneBtn": "પૂર્ણ",
+      "voiceSpeed": "અવાજની ઝડપ",
+      "eyeColor": "આંખો માટે રંગ",
+      "hearWord": "🔊 શબ્દ સાંભળો",
+      "tapFirst": "પહેલો અક્ષર દબાવો!",
+      "nextWord": "આગળનો શબ્દ ➡️",
+      "clear": "🧹 સાફ કરો",
+      "finish": "⭐ પૂર્ણ!",
+      "doneStar": "⭐ થઈ ગયું!",
+      "read": "🔊 વાંચો",
+      "back": "⬅️ પાછળ",
+      "next": "આગળ ➡️",
+      "listen": "🔊 સાંભળો",
+      "countAloud": "🔊 મોટેથી ગણો",
+      "tapObjects": "ગણવા માટે ચિત્ર પર ટચ કરો!",
+      "whatNext": "હવે શું આવશે? 🚂",
+      "oddOut": "અલગ પડતું ચિત્ર શોધો! 🔍",
+      "memMatch": "મેમરી મેચ 🃏",
+      "newGame": "🔄 નવી રમત",
+      "freshFruits": "🍎 તાજા ફળો",
+      "dryFruits": "🥜 સૂકા મેવા",
+      "basketSort": "🧺 ટોપલીમાં મૂકો",
+      "freshOrDry": "તાજું ફળ કે સૂકો મેવો? 🧺",
+      "freshBtn": "તાજું ફળ",
+      "dryBtn": "સૂકો મેવો",
+      "meetAnimals": "🐾 પ્રાણીઓને મળો",
+      "soundQuiz": "🔊 અવાજ ક્વિઝ",
+      "whoSound": "આ અવાજ કોનો છે? 🐾",
+      "hearSound": "🔊 અવાજ સાંભળો",
+      "shapesTab": "🔷 આકારો",
+      "colorsTab": "🎨 રંગો",
+      "findItTab": "🎯 શોધી બતાવો!",
+      "tapThe": "આ શોધો:",
+      "stickerBook": "🏆 મારી સ્ટીકર બુક"
+    },
+    "numWords": [
+      "એક",
+      "બે",
+      "ત્રણ",
+      "ચાર",
+      "પાંચ",
+      "છ",
+      "સાત",
+      "આઠ",
+      "નવ",
+      "દસ"
+    ],
+    "fruits": [
+      "સફરજન",
+      "કેળું",
+      "કેરી",
+      "દ્રાક્ષ",
+      "સંતરું",
+      "તરબૂચ",
+      "સ્ટ્રોબેરી",
+      "અનાનસ"
+    ],
+    "dryFruits": [
+      "બદામ",
+      "કાજુ",
+      "અખરોટ",
+      "પિસ્તા",
+      "મગફળી",
+      "ખજૂર"
+    ],
+    "animals": [
+      "સિંહ",
+      "ગાય",
+      "કૂતરો",
+      "બિલાડી",
+      "બતક",
+      "દેડકો",
+      "ઘેટું",
+      "હાથી",
+      "વાંદરો",
+      "કૂકડો",
+      "મધમાખી",
+      "ઘુવડ"
+    ],
+    "shapes": [
+      "ગોળ",
+      "ચોરસ",
+      "ત્રિકોણ",
+      "તારો",
+      "દિલ",
+      "હીરો",
+      "લંબગોળ",
+      "અર્ધચંદ્ર"
+    ],
+    "colors": [
+      "લાલ",
+      "વાદળી",
+      "પીળો",
+      "લીલો",
+      "નારંગી",
+      "જાંબલી",
+      "ગુલાબી",
+      "કથ્થઈ"
+    ]
+  },
+  "hi": {
+    "name": "हिन्दी (Hindi)",
+    "tts": "hi-IN",
+    "short": "हि",
+    "subtitle": "खेलें • सीखें • बनाएं • उम्र 3+",
+    "gift": "उपहार",
+    "backHome": "होम पर जाएं",
+    "talk": "बोलें",
+    "tapLeo": "लियो को छुएं!",
+    "leoGreet": "नमस्ते {name}! आज के रोमांच के लिए तैयार हैं?",
+    "leoDefault": "नमस्ते! आज के रोमांच के लिए तैयार हैं?",
+    "adventureTitle": "आज के 3 आसान कदम",
+    "done": "पूर्ण",
+    "step1": "1. 🧩 शब्द पहेली",
+    "step2": "2. ✏️ अक्षर लिखें",
+    "step3": "3. 🎨 चित्र बनाएं",
+    "progressTitle": "{name} की प्रगति",
+    "progressDefault": "सीखने की प्रगति",
+    "wordsLbl": "शब्द",
+    "lettersLbl": "अक्षर",
+    "numbersLbl": "गिनती",
+    "puzzlesLbl": "पहेली",
+    "nav": {
+      "home": "🏠 होम",
+      "wordpuzzle": "🧩 शब्द पहेली",
+      "art": "🎨 आर्ट स्टूडियो",
+      "story": "📖 कहानी",
+      "abc": "🔤 ABC",
+      "trace": "✏️ ट्रेस",
+      "numbers": "🔢 १२३ गिनती",
+      "blocks": "🧱 ब्लॉक्स",
+      "mind": "🧠 दिमागी खेल",
+      "fruits": "🍓 फल",
+      "animals": "🦁 जानवर",
+      "shapes": "🔷 आकार"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "शब्द पहेली",
+        "शब्द बनाना सीखें"
+      ],
+      "art": [
+        "आर्ट स्टूडियो",
+        "पेंट और स्टैम्प"
+      ],
+      "story": [
+        "कहानी का समय",
+        "पढ़ें और सुनें"
+      ],
+      "abc": [
+        "ABC फोनिक्स",
+        "A-Z अक्षर और ध्वनि"
+      ],
+      "trace": [
+        "अक्षर ट्रेस",
+        "उंगली से लिखें"
+      ],
+      "numbers": [
+        "१२३ गिनती",
+        "१ से १० तक गिनें"
+      ],
+      "blocks": [
+        "ब्लॉक बिल्डर",
+        "घर और रॉकेट बनाएं"
+      ],
+      "mind": [
+        "दिमागी खेल",
+        "पैटर्न और मेमोरी"
+      ],
+      "fruits": [
+        "फल और सूखे मेवे",
+        "ताजे फल और ड्राई फ्रूट"
+      ],
+      "animals": [
+        "जानवरों की आवाज",
+        "पहचानें और क्विज़ खेलें"
+      ],
+      "shapes": [
+        "आकार और रंग",
+        "सीखें और खोजें"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "लिटिल जीनियस में स्वागत है!",
+      "welcomeSub": "भाषा, बच्चे का नाम और आंखों के लिए सुरक्षित रंग चुनें",
+      "langLbl": "भाषा (Language)",
+      "nameLbl": "बच्चे का नाम",
+      "namePh": "नाम लिखें (जैसे आरव)",
+      "ageLbl": "बच्चे की उम्र",
+      "themeLbl": "आंखों के लिए कलर मोड",
+      "startBtn": "सीखना शुरू करें! 🚀",
+      "nameErr": "कृपया आगे बढ़ने के लिए बच्चे का नाम लिखें!",
+      "parentsOnly": "🔒 केवल माता-पिता के लिए",
+      "unlock": "खोलें",
+      "tryAgain": "फिर से कोशिश करें।",
+      "parentCorner": "⚙️ पेरेंट कॉर्नर और रिपोर्ट",
+      "copyReport": "📋 रिपोर्ट कॉपी करें",
+      "welcomeSetup": "👋 वेलकम सेटअप",
+      "privacy": "📄 प्राइवेसी पॉलिसी",
+      "resetStars": "स्टार रीसेट",
+      "doneBtn": "हो गया",
+      "voiceSpeed": "आवाज की गति",
+      "eyeColor": "आंखों का रंग मोड",
+      "hearWord": "🔊 शब्द सुनें",
+      "tapFirst": "पहला अक्षर दबाएं!",
+      "nextWord": "अगला शब्द ➡️",
+      "clear": "🧹 साफ करें",
+      "finish": "⭐ पूरा हुआ!",
+      "doneStar": "⭐ हो गया!",
+      "read": "🔊 पढ़ें",
+      "back": "⬅️ पीछे",
+      "next": "आगे ➡️",
+      "listen": "🔊 सुनें",
+      "countAloud": "🔊 जोर से गिनें",
+      "tapObjects": "गिनने के लिए चित्र पर टैप करें!",
+      "whatNext": "आगे क्या आएगा? 🚂",
+      "oddOut": "अलग दिखने वाला चुनें! 🔍",
+      "memMatch": "मेमोरी मैच 🃏",
+      "newGame": "🔄 नया खेल",
+      "freshFruits": "🍎 ताजे फल",
+      "dryFruits": "🥜 सूखे मेवे",
+      "basketSort": "🧺 टोकरी में रखें",
+      "freshOrDry": "ताजा फल या सूखा मेवा? 🧺",
+      "freshBtn": "ताजा फल",
+      "dryBtn": "सूखा मेवा",
+      "meetAnimals": "🐾 जानवरों से मिलें",
+      "soundQuiz": "🔊 आवाज क्विज़",
+      "whoSound": "यह आवाज किसकी है? 🐾",
+      "hearSound": "🔊 आवाज सुनें",
+      "shapesTab": "🔷 आकार",
+      "colorsTab": "🎨 रंग",
+      "findItTab": "🎯 खोजें!",
+      "tapThe": "इसे चुनें:",
+      "stickerBook": "🏆 मेरी स्टिकर बुक"
+    },
+    "numWords": [
+      "एक",
+      "दो",
+      "तीन",
+      "चार",
+      "पाँच",
+      "छह",
+      "सात",
+      "आठ",
+      "नौ",
+      "दस"
+    ],
+    "fruits": [
+      "सेब",
+      "केला",
+      "आम",
+      "अंगूर",
+      "संतरा",
+      "तरबूज",
+      "स्ट्रॉबेरी",
+      "अनानास"
+    ],
+    "dryFruits": [
+      "बादाम",
+      "काजू",
+      "अखरोट",
+      "पिस्ता",
+      "मूंगफली",
+      "खजूर"
+    ],
+    "animals": [
+      "शेर",
+      "गाय",
+      "कुत्ता",
+      "बिल्ली",
+      "बत्तख",
+      "मेंढक",
+      "भेड़",
+      "हाथी",
+      "बंदर",
+      "मुर्गा",
+      "मधुमक्खी",
+      "उल्लू"
+    ],
+    "shapes": [
+      "गोला",
+      "चौकोर",
+      "त्रिभुज",
+      "तारा",
+      "दिल",
+      "हीरा",
+      "अंडाकार",
+      "अर्धचंद्र"
+    ],
+    "colors": [
+      "लाल",
+      "नीला",
+      "पीला",
+      "हरा",
+      "नारंगी",
+      "बैंगनी",
+      "गुलाबी",
+      "भूरा"
+    ]
+  },
+  "mr": {
+    "name": "मराठी (Marathi)",
+    "tts": "mr-IN",
+    "short": "म",
+    "subtitle": "खेळा • शिका • बनवा • वय 3+",
+    "gift": "भेट",
+    "backHome": "होमवर जा",
+    "talk": "बोला",
+    "tapLeo": "लिओला टच करा!",
+    "leoGreet": "नमस्कार {name}! आजच्या खेळासाठी तयार आहात का?",
+    "leoDefault": "नमस्कार! आजच्या खेळासाठी तयार आहात का?",
+    "adventureTitle": "आजचे 3 सोपे टप्पे",
+    "done": "पूर्ण",
+    "step1": "1. 🧩 शब्द कोडे",
+    "step2": "2. ✏️ अक्षर लिहा",
+    "step3": "3. 🎨 चित्र काढा",
+    "progressTitle": "{name} ची प्रगती",
+    "progressDefault": "शिकण्याची प्रगती",
+    "wordsLbl": "शब्द",
+    "lettersLbl": "अक्षरे",
+    "numbersLbl": "अंक",
+    "puzzlesLbl": "कोडी",
+    "nav": {
+      "home": "🏠 होम",
+      "wordpuzzle": "🧩 शब्द कोडे",
+      "art": "🎨 आर्ट स्टुडिओ",
+      "story": "📖 गोष्ट",
+      "abc": "🔤 ABC",
+      "trace": "✏️ ट्रेस",
+      "numbers": "🔢 १२३ मोजा",
+      "blocks": "🧱 ब्लॉक्स",
+      "mind": "🧠 बुद्धीचा खेळ",
+      "fruits": "🍓 फळे",
+      "animals": "🦁 प्राणी",
+      "shapes": "🔷 आकार"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "शब्द कोडे",
+        "शब्द तयार करा"
+      ],
+      "art": [
+        "आर्ट स्टुडिओ",
+        "रंग आणि स्टॅम्प"
+      ],
+      "story": [
+        "गोष्टीची वेळ",
+        "वाचा आणि ऐका"
+      ],
+      "abc": [
+        "ABC फोनिक्स",
+        "A-Z अक्षरे आणि आवाज"
+      ],
+      "trace": [
+        "अक्षर ट्रेस",
+        "बोटाने लिहा"
+      ],
+      "numbers": [
+        "१२३ मोजा",
+        "१ ते १० मोजा"
+      ],
+      "blocks": [
+        "ब्लॉक बिल्डर",
+        "घर आणि रॉकेट"
+      ],
+      "mind": [
+        "बुद्धीचा खेळ",
+        "पॅटर्न आणि मेमरी"
+      ],
+      "fruits": [
+        "फळे आणि सुका मेवा",
+        "ताजी फळे आणि ड्रायफ्रुट"
+      ],
+      "animals": [
+        "प्राण्यांचे आवाज",
+        "ओळखा आणि क्विझ"
+      ],
+      "shapes": [
+        "आकार आणि रंग",
+        "शिका आणि शोधा"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "लिटिल जीनियसमध्ये स्वागत आहे!",
+      "welcomeSub": "भाषा, मुलाचे नाव आणि डोळ्यांसाठी सुरक्षित रंग निवडा",
+      "langLbl": "भाषा",
+      "nameLbl": "मुलाचे नाव",
+      "namePh": "नाव लिहा",
+      "ageLbl": "वय",
+      "themeLbl": "डोळ्यांसाठी कलर मोड",
+      "startBtn": "शिकणे सुरू करा! 🚀",
+      "nameErr": "कृपया पुढे जाण्यासाठी नाव लिहा!",
+      "parentsOnly": "🔒 फक्त पालकांसाठी",
+      "unlock": "उघडा",
+      "tryAgain": "पुन्हा प्रयत्न करा.",
+      "parentCorner": "⚙️ पालक कोपरा आणि रिपोर्ट",
+      "copyReport": "📋 रिपोर्ट कॉपी करा",
+      "welcomeSetup": "👋 वेलकम सेटअप",
+      "privacy": "📄 प्रायव्हसी पॉलिसी",
+      "resetStars": "स्टार रीसेट",
+      "doneBtn": "पूर्ण",
+      "voiceSpeed": "आवाजाचा वेग",
+      "eyeColor": "डोळ्यांचा रंग मोड",
+      "hearWord": "🔊 शब्द ऐका",
+      "tapFirst": "पहिले अक्षर दाबा!",
+      "nextWord": "पुढचा शब्द ➡️",
+      "clear": "🧹 पुसा",
+      "finish": "⭐ पूर्ण!",
+      "doneStar": "⭐ झाले!",
+      "read": "🔊 वाचा",
+      "back": "⬅️ मागे",
+      "next": "पुढे ➡️",
+      "listen": "🔊 ऐका",
+      "countAloud": "🔊 मोठ्याने मोजा",
+      "tapObjects": "मोजण्यासाठी चित्रावर टॅप करा!",
+      "whatNext": "पुढे काय येईल? 🚂",
+      "oddOut": "वेगळे चित्र ओळखा! 🔍",
+      "memMatch": "मेमरी मॅच 🃏",
+      "newGame": "🔄 नवीन खेळ",
+      "freshFruits": "🍎 ताजी फळे",
+      "dryFruits": "🥜 सुका मेवा",
+      "basketSort": "🧺 टोपलीत ठेवा",
+      "freshOrDry": "ताजे फळ की सुका मेवा? 🧺",
+      "freshBtn": "ताजे फळ",
+      "dryBtn": "सुका मेवा",
+      "meetAnimals": "🐾 प्राण्यांना भेटा",
+      "soundQuiz": "🔊 आवाज क्विझ",
+      "whoSound": "हा आवाज कोणाचा आहे? 🐾",
+      "hearSound": "🔊 आवाज ऐका",
+      "shapesTab": "🔷 आकार",
+      "colorsTab": "🎨 रंग",
+      "findItTab": "🎯 शोधा!",
+      "tapThe": "हे शोधा:",
+      "stickerBook": "🏆 माझे स्टिकर बुक"
+    },
+    "numWords": [
+      "एक",
+      "दोन",
+      "तीन",
+      "चार",
+      "पाच",
+      "सहा",
+      "सात",
+      "आठ",
+      "नऊ",
+      "दहा"
+    ],
+    "fruits": [
+      "सफरचंद",
+      "केळी",
+      "आंबा",
+      "द्राक्षे",
+      "संत्रे",
+      "कलिंगड",
+      "स्ट्रॉबेरी",
+      "अननस"
+    ],
+    "dryFruits": [
+      "बदाम",
+      "काजू",
+      "अक्रोड",
+      "पिस्ता",
+      "शेंगदाणा",
+      "खजूर"
+    ],
+    "animals": [
+      "सिंह",
+      "गाय",
+      "कुत्रा",
+      "मांजर",
+      "बदक",
+      "बेडूक",
+      "मेंढी",
+      "हत्ती",
+      "माकड",
+      "कोंबडा",
+      "मधमाशी",
+      "घुबड"
+    ],
+    "shapes": [
+      "वर्तुळ",
+      "चौरस",
+      "त्रिकोण",
+      "तारा",
+      "हृदय",
+      "हिरा",
+      "अंडाकृती",
+      "चंद्रकोर"
+    ],
+    "colors": [
+      "लाल",
+      "निळा",
+      "पिवळा",
+      "हिरवा",
+      "केशरी",
+      "जांभळा",
+      "गुलाबी",
+      "तपकिरी"
+    ]
+  },
+  "ta": {
+    "name": "தமிழ் (Tamil)",
+    "tts": "ta-IN",
+    "short": "த",
+    "subtitle": "விளையாடு • கற்றுக்கொள் • உருவாக்கு",
+    "gift": "பரிசு",
+    "backHome": "முகப்புக்குச் செல்",
+    "talk": "பேசு",
+    "tapLeo": "லியோவைத் தட்டு!",
+    "leoGreet": "வணக்கம் {name}! இன்றைய சாகசத்திற்குத் தயாரா?",
+    "leoDefault": "வணக்கம்! இன்றைய சாகசத்திற்குத் தயாரா?",
+    "adventureTitle": "இன்றைய 3 படிகள்",
+    "done": "முடிந்தது",
+    "step1": "1. 🧩 சொல் புதிர்",
+    "step2": "2. ✏️ எழுதுதல்",
+    "step3": "3. 🎨 ஓவியம்",
+    "progressTitle": "{name} முன்னேற்றம்",
+    "progressDefault": "கற்றல் முன்னேற்றம்",
+    "wordsLbl": "சொற்கள்",
+    "lettersLbl": "எழுத்துகள்",
+    "numbersLbl": "எண்கள்",
+    "puzzlesLbl": "புதிர்கள்",
+    "nav": {
+      "home": "🏠 முகப்பு",
+      "wordpuzzle": "🧩 சொல் புதிர்",
+      "art": "🎨 ஓவியம்",
+      "story": "📖 கதை",
+      "abc": "🔤 ABC",
+      "trace": "✏️ எழுது",
+      "numbers": "🔢 123",
+      "blocks": "🧱 கட்டிடம்",
+      "mind": "🧠 மூளை விளையாட்டு",
+      "fruits": "🍓 பழங்கள்",
+      "animals": "🦁 விலங்குகள்",
+      "shapes": "🔷 வடிவங்கள்"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "சொல் புதிர்",
+        "சொற்களை உருவாக்கு"
+      ],
+      "art": [
+        "ஓவியக் கூடம்",
+        "வண்ணம் தீட்டு"
+      ],
+      "story": [
+        "கதை நேரம்",
+        "படி & கேள்"
+      ],
+      "abc": [
+        "ABC ஒலிகள்",
+        "A-Z எழுத்துகள்"
+      ],
+      "trace": [
+        "எழுத்துப் பயிற்சி",
+        "விரலால் எழுது"
+      ],
+      "numbers": [
+        "123 எண்ணுதல்",
+        "1-10 எண்ணு"
+      ],
+      "blocks": [
+        "கட்டிட விளையாட்டு",
+        "வீடு & ராக்கெட்"
+      ],
+      "mind": [
+        "மூளை விளையாட்டு",
+        "புதிர் & நினைவாற்றல்"
+      ],
+      "fruits": [
+        "பழங்கள் & பருப்புகள்",
+        "பழம் வகைப்படுத்து"
+      ],
+      "animals": [
+        "விலங்கு ஒலிகள்",
+        "கேள் & விளையாடு"
+      ],
+      "shapes": [
+        "வடிவம் & நிறம்",
+        "கற்று & கண்டுபிடி"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "லிட்டில் ஜீனியஸுக்கு வரவேற்கிறோம்!",
+      "welcomeSub": "மொழி, பெயர் மற்றும் கண் பாதுகாப்பு நிறத்தைத் தேர்ந்தெடுக்கவும்",
+      "langLbl": "மொழி (Language)",
+      "nameLbl": "குழந்தையின் பெயர்",
+      "namePh": "பெயரை உள்ளிடவும்",
+      "ageLbl": "வயது",
+      "themeLbl": "கண் பாதுகாப்பு நிறம்",
+      "startBtn": "தொடங்குவோம்! 🚀",
+      "nameErr": "தயவுசெய்து குழந்தையின் பெயரை உள்ளிடவும்!",
+      "parentsOnly": "🔒 பெற்றோருக்கு மட்டும்",
+      "unlock": "திற",
+      "tryAgain": "மீண்டும் முயற்சிக்கவும்.",
+      "parentCorner": "⚙️ பெற்றோர் பகுதி & அறிக்கை",
+      "copyReport": "📋 அறிக்கையை நகலெடு",
+      "welcomeSetup": "👋 வரவேற்பு அமைப்பு",
+      "privacy": "📄 தனியுரிமைக் கொள்கை",
+      "resetStars": "மீட்டமை",
+      "doneBtn": "முடிந்தது",
+      "voiceSpeed": "குரல் வேகம்",
+      "eyeColor": "நிற முறை",
+      "hearWord": "🔊 சொல் கேள்",
+      "tapFirst": "முதல் எழுத்தைத் தட்டு!",
+      "nextWord": "அடுத்த சொல் ➡️",
+      "clear": "🧹 அழி",
+      "finish": "⭐ முடிந்தது!",
+      "doneStar": "⭐ சரி!",
+      "read": "🔊 படி",
+      "back": "⬅️ பின்",
+      "next": "அடுத்து ➡️",
+      "listen": "🔊 கேள்",
+      "countAloud": "🔊 சத்தமாக எண்ணு",
+      "tapObjects": "எண்ண படத்தைத் தட்டு!",
+      "whatNext": "அடுத்து என்ன வரும்? 🚂",
+      "oddOut": "வேறுபட்டதைக் கண்டுபிடி! 🔍",
+      "memMatch": "நினைவாற்றல் 🃏",
+      "newGame": "🔄 புதிய ஆட்டம்",
+      "freshFruits": "🍎 பழங்கள்",
+      "dryFruits": "🥜 உலர் பழங்கள்",
+      "basketSort": "🧺 கூடை வகை",
+      "freshOrDry": "பழமா அல்லது உலர் பழமா? 🧺",
+      "freshBtn": "பழம்",
+      "dryBtn": "உலர் பழம்",
+      "meetAnimals": "🐾 விலங்குகள்",
+      "soundQuiz": "🔊 ஒலி வினாடி வினா",
+      "whoSound": "இது யாருடைய ஒலி? 🐾",
+      "hearSound": "🔊 ஒலி கேள்",
+      "shapesTab": "🔷 வடிவங்கள்",
+      "colorsTab": "🎨 நிறங்கள்",
+      "findItTab": "🎯 கண்டுபிடி!",
+      "tapThe": "இதைத் தட்டு:",
+      "stickerBook": "🏆 ஸ்டிக்கர் புத்தகம்"
+    },
+    "numWords": [
+      "ஒன்று",
+      "இரண்டு",
+      "மூன்று",
+      "நான்கு",
+      "ஐந்து",
+      "ஆறு",
+      "ஏழு",
+      "எட்டு",
+      "ஒன்பது",
+      "பத்து"
+    ],
+    "fruits": [
+      "ஆப்பிள்",
+      "வாழைப்பழம்",
+      "மாம்பழம்",
+      "திராட்சை",
+      "ஆரஞ்சு",
+      "தர்பூசணி",
+      "ஸ்ட்ராபெரி",
+      "அன்னாசி"
+    ],
+    "dryFruits": [
+      "பாதாம்",
+      "முந்திரி",
+      "வால்நட்",
+      "பிஸ்தா",
+      "நிலக்கடலை",
+      "பேரீச்சை"
+    ],
+    "animals": [
+      "சிங்கம்",
+      "பசு",
+      "நாய்",
+      "பூனை",
+      "வாத்து",
+      "தவளை",
+      "ஆடு",
+      "யானை",
+      "குரங்கு",
+      "சேவல்",
+      "தேனீ",
+      "ஆந்தை"
+    ],
+    "shapes": [
+      "வட்டம்",
+      "சதுரம்",
+      "முக்கோணம்",
+      "நட்சத்திரம்",
+      "இதயம்",
+      "வைரம்",
+      "நீள்வட்டம்",
+      "பிறை"
+    ],
+    "colors": [
+      "சிவப்பு",
+      "நீலம்",
+      "மஞ்சள்",
+      "பச்சை",
+      "ஆரஞ்சு",
+      "ஊதா",
+      "இளஞ்சிவப்பு",
+      "பழுப்பு"
+    ]
+  },
+  "te": {
+    "name": "తెలుగు (Telugu)",
+    "tts": "te-IN",
+    "short": "తె",
+    "subtitle": "ఆడుకోండి • నేర్చుకోండి • సృష్టించండి",
+    "gift": "బహుమతి",
+    "backHome": "హోమ్‌కు వెళ్ళండి",
+    "talk": "మాట్లాడు",
+    "tapLeo": "లియోను నొక్కండి!",
+    "leoGreet": "నమస్తే {name}! ఈరోజు ఆటకు సిద్ధమా?",
+    "leoDefault": "నమస్తే! ఈరోజు ఆటకు సిద్ధమా?",
+    "adventureTitle": "ఈరోజు 3 అడుగులు",
+    "done": "పూర్తి",
+    "step1": "1. 🧩 పదాల పజిల్",
+    "step2": "2. ✏️ అక్షరం రాయండి",
+    "step3": "3. 🎨 బొమ్మ గీయండి",
+    "progressTitle": "{name} పురోగతి",
+    "progressDefault": "నేర్చుకునే పురోగతి",
+    "wordsLbl": "పదాలు",
+    "lettersLbl": "అక్షరాలు",
+    "numbersLbl": "అంకెలు",
+    "puzzlesLbl": "పజిల్స్",
+    "nav": {
+      "home": "🏠 హోమ్",
+      "wordpuzzle": "🧩 పదాలు",
+      "art": "🎨 ఆర్ట్",
+      "story": "📖 కథ",
+      "abc": "🔤 ABC",
+      "trace": "✏️ రాయడం",
+      "numbers": "🔢 123",
+      "blocks": "🧱 బ్లాక్స్",
+      "mind": "🧠 మెదడు ఆట",
+      "fruits": "🍓 పండ్లు",
+      "animals": "🦁 జంతువులు",
+      "shapes": "🔷 ఆకారాలు"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "పదాల పజిల్",
+        "పదాలు కట్టండి"
+      ],
+      "art": [
+        "ఆర్ట్ స్టూడియో",
+        "రంగులు వేయండి"
+      ],
+      "story": [
+        "కథల సమయం",
+        "చదవండి & వినండి"
+      ],
+      "abc": [
+        "ABC ఫోనిక్స్",
+        "A-Z అక్షరాలు"
+      ],
+      "trace": [
+        "అక్షర లేఖనం",
+        "వేలితో రాయండి"
+      ],
+      "numbers": [
+        "123 లెక్కింపు",
+        "1-10 లెక్కించండి"
+      ],
+      "blocks": [
+        "బ్లాక్ బిల్డర్",
+        "ఇల్లు & రాకెట్"
+      ],
+      "mind": [
+        "మెదడు ఆటలు",
+        "ప్యాటర్న్ & మెమరీ"
+      ],
+      "fruits": [
+        "పండ్లు & డ్రై ఫ్రూట్స్",
+        "తాజా & ఎండు పండ్లు"
+      ],
+      "animals": [
+        "జంతువుల శబ్దాలు",
+        "వినండి & ఆడండి"
+      ],
+      "shapes": [
+        "ఆకారాలు & రంగులు",
+        "నేర్చుకో & వెతుకు"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "లిటిల్ జీనియస్‌కు స్వాగతం!",
+      "welcomeSub": "భాష, పేరు మరియు కంటికి సురక్షితమైన రంగును ఎంచుకోండి",
+      "langLbl": "భాష",
+      "nameLbl": "పిల్లల పేరు",
+      "namePh": "పేరు రాయండి",
+      "ageLbl": "వయస్సు",
+      "themeLbl": "కంటి సౌకర్య రంగు",
+      "startBtn": "ప్రారంభించండి! 🚀",
+      "nameErr": "దయచేసి పేరు నమోదు చేయండి!",
+      "parentsOnly": "🔒 తల్లిదండ్రులకు మాత్రమే",
+      "unlock": "తెరవండి",
+      "tryAgain": "మళ్ళీ ప్రయత్నించండి.",
+      "parentCorner": "⚙️ తల్లిదండ్రుల విభాగం",
+      "copyReport": "📋 రిపోర్ట్ కాపీ చేయండి",
+      "welcomeSetup": "👋 వెల్కమ్ సెటప్",
+      "privacy": "📄 ప్రైవసీ పాలసీ",
+      "resetStars": "రీసెట్",
+      "doneBtn": "పూర్తి",
+      "voiceSpeed": "వాయిస్ వేగం",
+      "eyeColor": "కలర్ మోడ్",
+      "hearWord": "🔊 పదం వినండి",
+      "tapFirst": "మొదటి అక్షరాన్ని నొక్కండి!",
+      "nextWord": "తర్వాతి పదం ➡️",
+      "clear": "🧹 శుభ్రం",
+      "finish": "⭐ పూర్తి!",
+      "doneStar": "⭐ అయింది!",
+      "read": "🔊 చదవండి",
+      "back": "⬅️ వెనుకకు",
+      "next": "తర్వాత ➡️",
+      "listen": "🔊 వినండి",
+      "countAloud": "🔊 గట్టిగా లెక్కించండి",
+      "tapObjects": "లెక్కించడానికి నొక్కండి!",
+      "whatNext": "తర్వాత ఏమి వస్తుంది? 🚂",
+      "oddOut": "వేరుగా ఉన్నది గుర్తించండి! 🔍",
+      "memMatch": "మెమరీ మ్యాచ్ 🃏",
+      "newGame": "🔄 కొత్త ఆట",
+      "freshFruits": "🍎 తాజా పండ్లు",
+      "dryFruits": "🥜 డ్రై ఫ్రూట్స్",
+      "basketSort": "🧺 బుట్టలో వేయండి",
+      "freshOrDry": "తాజా పండు లేదా డ్రై ఫ్రూట్? 🧺",
+      "freshBtn": "తాజా పండు",
+      "dryBtn": "డ్రై ఫ్రూట్",
+      "meetAnimals": "🐾 జంతువులు",
+      "soundQuiz": "🔊 శబ్ద క్విజ్",
+      "whoSound": "ఈ శబ్దం ఎవరిది? 🐾",
+      "hearSound": "🔊 శబ్దం వినండి",
+      "shapesTab": "🔷 ఆకారాలు",
+      "colorsTab": "🎨 రంగులు",
+      "findItTab": "🎯 వెతకండి!",
+      "tapThe": "దీనిని నొక్కండి:",
+      "stickerBook": "🏆 నా స్టిక్కర్ బుక్"
+    },
+    "numWords": [
+      "ఒకటి",
+      "రెండు",
+      "మూడు",
+      "నాలుగు",
+      "ఐదు",
+      "ఆరు",
+      "ఏడు",
+      "ఎనిమిది",
+      "తొమ్మిది",
+      "పది"
+    ],
+    "fruits": [
+      "ఆపిల్",
+      "అరటిపండు",
+      "మామిడి",
+      "ద్రాక్ష",
+      "నారింజ",
+      "పుచ్చకాయ",
+      "స్ట్రాబెర్రీ",
+      "పైనాపిల్"
+    ],
+    "dryFruits": [
+      "బాదం",
+      "జీడిపప్పు",
+      "వాల్నట్",
+      "పిస్తా",
+      "వేరుశనగ",
+      "ఖర్జూరం"
+    ],
+    "animals": [
+      "సింహం",
+      "ఆవు",
+      "కుక్క",
+      "పిల్లి",
+      "బాతు",
+      "కప్ప",
+      "గొర్రె",
+      "ఏనుగు",
+      "కోతి",
+      "కోడిపుంజు",
+      "తేనెటీగ",
+      "గుడ్లగూబ"
+    ],
+    "shapes": [
+      "వృత్తం",
+      "చతురస్రం",
+      "త్రిభుజం",
+      "నక్షత్రం",
+      "హృదయం",
+      "వజ్రం",
+      "అండాకారం",
+      "అర్ధచంద్రుడు"
+    ],
+    "colors": [
+      "ఎరుపు",
+      "నీలం",
+      "పసుపు",
+      "ఆకుపచ్చ",
+      "నారింజ",
+      "ఊదా",
+      "గులాబీ",
+      "గోధుమ"
+    ]
+  },
+  "kn": {
+    "name": "ಕನ್ನಡ (Kannada)",
+    "tts": "kn-IN",
+    "short": "ಕ",
+    "subtitle": "ಆಡಿ • ಕಲಿಯಿರಿ • ರಚಿಸಿ • ವಯಸ್ಸು 3+",
+    "gift": "ಉಡುಗೊರೆ",
+    "backHome": "ಹೋಮ್‌ಗೆ ಹೋಗಿ",
+    "talk": "ಮಾತನಾಡಿ",
+    "tapLeo": "ಲಿಯೋ ಒತ್ತಿ!",
+    "leoGreet": "ನಮಸ್ಕಾರ {name}! ಇಂದಿನ ಆಟಕ್ಕೆ ಸಿದ್ಧರಾ?",
+    "leoDefault": "ನಮಸ್ಕಾರ! ಇಂದಿನ ಆಟಕ್ಕೆ ಸಿದ್ಧರಾ?",
+    "adventureTitle": "ಇಂದಿನ 3 ಹಂತಗಳು",
+    "done": "ಮುಗಿದಿದೆ",
+    "step1": "1. 🧩 ಪದ ಒಗಟು",
+    "step2": "2. ✏️ ಅಕ್ಷರ ಬರೆಯಿರಿ",
+    "step3": "3. 🎨 ಚಿತ್ರ ಬಿಡಿಸಿ",
+    "progressTitle": "{name} ಪ್ರಗತಿ",
+    "progressDefault": "ಕಲಿಕೆಯ ಪ್ರಗತಿ",
+    "wordsLbl": "ಪದಗಳು",
+    "lettersLbl": "ಅಕ್ಷರಗಳು",
+    "numbersLbl": "ಸಂಖ್ಯೆಗಳು",
+    "puzzlesLbl": "ಒಗಟು",
+    "nav": {
+      "home": "🏠 ಹೋಮ್",
+      "wordpuzzle": "🧩 ಪದ ಒಗಟು",
+      "art": "🎨 ಆರ್ಟ್",
+      "story": "📖 ಕಥೆ",
+      "abc": "🔤 ABC",
+      "trace": "✏️ ಬರೆಯಿರಿ",
+      "numbers": "🔢 123",
+      "blocks": "🧱 ಬ್ಲಾಕ್ಸ್",
+      "mind": "🧠 ಮೆದುಳಿನ ಆಟ",
+      "fruits": "🍓 ಹಣ್ಣುಗಳು",
+      "animals": "🦁 ಪ್ರಾಣಿಗಳು",
+      "shapes": "🔷 ಆಕಾರಗಳು"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "ಪದ ಒಗಟು",
+        "ಪದಗಳನ್ನು ಜೋಡಿಸಿ"
+      ],
+      "art": [
+        "ಆರ್ಟ್ ಸ್ಟುಡಿಯೋ",
+        "ಬಣ್ಣ ಹಚ್ಚಿ"
+      ],
+      "story": [
+        "ಕಥೆ ಸಮಯ",
+        "ಓದಿ & ಕೇಳಿ"
+      ],
+      "abc": [
+        "ABC ಫೋನಿಕ್ಸ್",
+        "A-Z ಅಕ್ಷರಗಳು"
+      ],
+      "trace": [
+        "ಅಕ್ಷರ ಬರವಣಿಗೆ",
+        "ಬೆರಳಿನಿಂದ ಬರೆಯಿರಿ"
+      ],
+      "numbers": [
+        "123 ಎಣಿಕೆ",
+        "1-10 ಎಣಿಸಿ"
+      ],
+      "blocks": [
+        "ಬ್ಲಾಕ್ ಬಿಲ್ಡರ್",
+        "ಮನೆ & ರಾಕೆಟ್"
+      ],
+      "mind": [
+        "ಮೆದುಳಿನ ಆಟ",
+        "ಪ್ಯಾಟರ್ನ್ & ಮೆಮೊರಿ"
+      ],
+      "fruits": [
+        "ಹಣ್ಣುಗಳು & ಬೀಜಗಳು",
+        "ತಾಜಾ & ಒಣ ಹಣ್ಣು"
+      ],
+      "animals": [
+        "ಪ್ರಾಣಿಗಳ ಧ್ವನಿ",
+        "ಕೇಳಿ & ಆಡಿ"
+      ],
+      "shapes": [
+        "ಆಕಾರ & ಬಣ್ಣ",
+        "ಕಲಿಯಿರಿ & ಹುಡುಕಿ"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "ಲಿಟಲ್ ಜೀನಿಯಸ್‌ಗೆ ಸ್ವಾಗತ!",
+      "welcomeSub": "ಭಾಷೆ, ಹೆಸರು ಮತ್ತು ಕಣ್ಣಿಗೆ ಹಿತವಾದ ಬಣ್ಣ ಆರಿಸಿ",
+      "langLbl": "ಭಾಷೆ",
+      "nameLbl": "ಮಗುವಿನ ಹೆಸರು",
+      "namePh": "ಹೆಸರು ಬರೆಯಿರಿ",
+      "ageLbl": "ವಯಸ್ಸು",
+      "themeLbl": "ಕಣ್ಣಿನ ಆರಾಮ ಬಣ್ಣ",
+      "startBtn": "ಪ್ರಾರಂಭಿಸಿ! 🚀",
+      "nameErr": "ದಯವಿಟ್ಟು ಹೆಸರನ್ನು ನಮೂದಿಸಿ!",
+      "parentsOnly": "🔒 ಪೋಷಕರಿಗೆ ಮಾತ್ರ",
+      "unlock": "ತೆರೆಯಿರಿ",
+      "tryAgain": "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+      "parentCorner": "⚙️ ಪೋಷಕರ ವಿಭಾಗ",
+      "copyReport": "📋 ವರದಿ ಕಾಪಿ ಮಾಡಿ",
+      "welcomeSetup": "👋 ಸ್ವಾಗತ ಸೆಟಪ್",
+      "privacy": "📄 ಗೌಪ್ಯತೆ ನೀತಿ",
+      "resetStars": "ರೀಸೆಟ್",
+      "doneBtn": "ಮುಗಿಯಿತು",
+      "voiceSpeed": "ಧ್ವನಿ ವೇಗ",
+      "eyeColor": "ಬಣ್ಣದ ಮೋಡ್",
+      "hearWord": "🔊 ಪದ ಕೇಳಿ",
+      "tapFirst": "ಮೊದಲ ಅಕ್ಷರ ಒತ್ತಿ!",
+      "nextWord": "ಮುಂದಿನ ಪದ ➡️",
+      "clear": "🧹 ಅಳಿಸಿ",
+      "finish": "⭐ ಮುಗಿಯಿತು!",
+      "doneStar": "⭐ ಸರಿ!",
+      "read": "🔊 ಓದಿ",
+      "back": "⬅️ ಹಿಂದೆ",
+      "next": "ಮುಂದೆ ➡️",
+      "listen": "🔊 ಕೇಳಿ",
+      "countAloud": "🔊 ಜೋರಾಗಿ ಎಣಿಸಿ",
+      "tapObjects": "ಎಣಿಸಲು ಚಿತ್ರ ಒತ್ತಿ!",
+      "whatNext": "ಮುಂದೆ ಏನು ಬರುತ್ತದೆ? 🚂",
+      "oddOut": "ಭಿನ್ನವಾದದ್ದನ್ನು ಹುಡುಕಿ! 🔍",
+      "memMatch": "ಮೆಮೊರಿ ಮ್ಯಾಚ್ 🃏",
+      "newGame": "🔄 ಹೊಸ ಆಟ",
+      "freshFruits": "🍎 ತಾಜಾ ಹಣ್ಣು",
+      "dryFruits": "🥜 ಒಣ ಹಣ್ಣು",
+      "basketSort": "🧺 ಬುಟ್ಟಿ ವಿಂಗಡಣೆ",
+      "freshOrDry": "ತಾಜಾ ಹಣ್ಣು ಅಥವಾ ಒಣ ಹಣ್ಣು? 🧺",
+      "freshBtn": "ತಾಜಾ ಹಣ್ಣು",
+      "dryBtn": "ಒಣ ಹಣ್ಣು",
+      "meetAnimals": "🐾 ಪ್ರಾಣಿಗಳು",
+      "soundQuiz": "🔊 ಧ್ವನಿ ಕ್ವಿಜ್",
+      "whoSound": "ಈ ಧ್ವನಿ ಯಾರದ್ದು? 🐾",
+      "hearSound": "🔊 ಧ್ವನಿ ಕೇಳಿ",
+      "shapesTab": "🔷 ಆಕಾರಗಳು",
+      "colorsTab": "🎨 ಬಣ್ಣಗಳು",
+      "findItTab": "🎯 ಹುಡುಕಿ!",
+      "tapThe": "ಇದನ್ನು ಒತ್ತಿ:",
+      "stickerBook": "🏆 ಸ್ಟಿಕ್ಕರ್ ಪುಸ್ತಕ"
+    },
+    "numWords": [
+      "ಒಂದು",
+      "ಎರಡು",
+      "ಮೂರು",
+      "ನಾಲ್ಕು",
+      "ಐದು",
+      "ಆರು",
+      "ಏಳು",
+      "ಎಂಟು",
+      "ಒಂಬತ್ತು",
+      "ಹತ್ತು"
+    ],
+    "fruits": [
+      "ಸೇಬು",
+      "ಬಾಳೆಹಣ್ಣು",
+      "ಮಾವಿನಹಣ್ಣು",
+      "ದ್ರಾಕ್ಷಿ",
+      "ಕಿತ್ತಳೆ",
+      "ಕಲ್ಲಂಗಡಿ",
+      "ಸ್ಟ್ರಾಬೆರಿ",
+      "ಅನಾನಸ್"
+    ],
+    "dryFruits": [
+      "ಬಾದಾಮಿ",
+      "ಗೋಡಂಬಿ",
+      "ಅಕ್ರೋಟು",
+      "ಪಿಸ್ತಾ",
+      "ಕಡಲೆಕಾಯಿ",
+      "ಖರ್ಜೂರ"
+    ],
+    "animals": [
+      "ಸಿಂಹ",
+      "ಹಸು",
+      "ನಾಯಿ",
+      "ಬೆಕ್ಕು",
+      "ಬಾತುಕೋಳಿ",
+      "ಕಪ್ಪೆ",
+      "ಕುರಿ",
+      "ಆನೆ",
+      "ಕೋತಿ",
+      "ಹುಂಜ",
+      "ಜೇನುನೊಣ",
+      "ಗೂಬೆ"
+    ],
+    "shapes": [
+      "ವೃತ್ತ",
+      "ಚೌಕ",
+      "ತ್ರಿಕೋನ",
+      "ನಕ್ಷತ್ರ",
+      "ಹೃದಯ",
+      "ವಜ್ರ",
+      "ಅಂಡಾಕಾರ",
+      "ಅರ್ಧಚಂದ್ರ"
+    ],
+    "colors": [
+      "ಕೆಂಪು",
+      "ನೀಲಿ",
+      "ಹಳದಿ",
+      "ಹಸಿರು",
+      "ಕಿತ್ತಳೆ",
+      "ನೇರಳೆ",
+      "ಗುಲಾಬಿ",
+      "ಕಂದು"
+    ]
+  },
+  "ml": {
+    "name": "മലയാളം (Malayalam)",
+    "tts": "ml-IN",
+    "short": "മ",
+    "subtitle": "കളിക്കൂ • പഠിക്കൂ • നിർമ്മിക്കൂ",
+    "gift": "സമ്മാനം",
+    "backHome": "ഹോമിലേക്ക്",
+    "talk": "സംസാരിക്കൂ",
+    "tapLeo": "ലിയോയെ തൊടൂ!",
+    "leoGreet": "നമസ്കാരം {name}! ഇന്നത്തെ കളിക്കായി തയ്യാറാണോ?",
+    "leoDefault": "നമസ്കാരം! ഇന്നത്തെ കളിക്കായി തയ്യാറാണോ?",
+    "adventureTitle": "ഇന്നത്തെ 3 ഘട്ടങ്ങൾ",
+    "done": "പൂർത്തിയായി",
+    "step1": "1. 🧩 വാക്ക് പസിൽ",
+    "step2": "2. ✏️ അക്ഷരം എഴുതാം",
+    "step3": "3. 🎨 ചിത്രം വരയ്ക്കാം",
+    "progressTitle": "{name} പുരോഗതി",
+    "progressDefault": "പഠന പുരോഗതി",
+    "wordsLbl": "വാക്കുകൾ",
+    "lettersLbl": "അക്ഷരങ്ങൾ",
+    "numbersLbl": "അക്കങ്ങൾ",
+    "puzzlesLbl": "പസിലുകൾ",
+    "nav": {
+      "home": "🏠 ഹോം",
+      "wordpuzzle": "🧩 വാക്കുകൾ",
+      "art": "🎨 ആർട്ട്",
+      "story": "📖 കഥ",
+      "abc": "🔤 ABC",
+      "trace": "✏️ എഴുതാം",
+      "numbers": "🔢 123",
+      "blocks": "🧱 ബ്ലോക്സ്",
+      "mind": "🧠 ബുദ്ധി കളി",
+      "fruits": "🍓 പഴങ്ങൾ",
+      "animals": "🦁 മൃഗങ്ങൾ",
+      "shapes": "🔷 ആകൃതി"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "വാക്ക് പസിൽ",
+        "വാക്കുകൾ ഉണ്ടാക്കാം"
+      ],
+      "art": [
+        "ആർട്ട് സ്റ്റുഡിയോ",
+        "നിറം കൊടുക്കാം"
+      ],
+      "story": [
+        "കഥാ സമയം",
+        "വായിക്കാം & കേൾക്കാം"
+      ],
+      "abc": [
+        "ABC ഫോണിക്സ്",
+        "A-Z അക്ഷരങ്ങൾ"
+      ],
+      "trace": [
+        "അക്ഷരമെഴുത്ത്",
+        "വിരൽ കൊണ്ട് എഴുതാം"
+      ],
+      "numbers": [
+        "123 എണ്ണാം",
+        "1-10 എണ്ണാം"
+      ],
+      "blocks": [
+        "ബ്ലോക്ക് ബിൽഡർ",
+        "വീടും റോക്കറ്റും"
+      ],
+      "mind": [
+        "ബുദ്ധി കളി",
+        "പാറ്റേൺ & മെമ്മറി"
+      ],
+      "fruits": [
+        "പഴങ്ങളും അണ്ടിപ്പരിപ്പും",
+        "തിരിച്ചറിയാം"
+      ],
+      "animals": [
+        "മൃഗങ്ങളുടെ ശബ്ദം",
+        "കേൾക്കാം & കളിക്കാം"
+      ],
+      "shapes": [
+        "ആകൃതിയും നിറവും",
+        "പഠിക്കാം & കണ്ടെത്താം"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "ലിറ്റിൽ ജീനിയസിലേക്ക് സ്വാഗതം!",
+      "welcomeSub": "ഭാഷ, പേര്, കണ്ണിന് സുരക്ഷിതമായ നിറം എന്നിവ തിരഞ്ഞെടുക്കുക",
+      "langLbl": "ഭാഷ",
+      "nameLbl": "കുട്ടിയുടെ പേര്",
+      "namePh": "പേര് നൽകുക",
+      "ageLbl": "പ്രായം",
+      "themeLbl": "കളർ മോഡ്",
+      "startBtn": "തുടങ്ങാം! 🚀",
+      "nameErr": "ദയവായി പേര് നൽകുക!",
+      "parentsOnly": "🔒 മാതാപിതാക്കൾക്ക് മാത്രം",
+      "unlock": "തുറക്കുക",
+      "tryAgain": "വീണ്ടും ശ്രമിക്കുക.",
+      "parentCorner": "⚙️ പേരന്റ് കോർണർ",
+      "copyReport": "📋 റിപ്പോർട്ട് കോപ്പി",
+      "welcomeSetup": "👋 വെൽക്കം സെറ്റപ്പ്",
+      "privacy": "📄 പ്രൈവസി പോളിസി",
+      "resetStars": "റീസെറ്റ്",
+      "doneBtn": "ശരി",
+      "voiceSpeed": "ശബ്ദ വേഗത",
+      "eyeColor": "കളർ മോഡ്",
+      "hearWord": "🔊 കേൾക്കൂ",
+      "tapFirst": "ആദ്യ അക്ഷരം തൊടൂ!",
+      "nextWord": "അടുത്ത വാക്ക് ➡️",
+      "clear": "🧹 മായ്ക്കുക",
+      "finish": "⭐ പൂർത്തിയായി!",
+      "doneStar": "⭐ ശരി!",
+      "read": "🔊 വായിക്കൂ",
+      "back": "⬅️ പിന്നിലേക്ക്",
+      "next": "അടുത്തത് ➡️",
+      "listen": "🔊 കേൾക്കൂ",
+      "countAloud": "🔊 ഉറക്കെ എണ്ണൂ",
+      "tapObjects": "എണ്ണാൻ ചിത്രത്തിൽ തൊടൂ!",
+      "whatNext": "അടുത്തത് എന്താണ്? 🚂",
+      "oddOut": "വ്യത്യസ്തമായത് കണ്ടെത്തൂ! 🔍",
+      "memMatch": "മെമ്മറി മാച്ച് 🃏",
+      "newGame": "🔄 പുതിയ കളി",
+      "freshFruits": "🍎 പഴങ്ങൾ",
+      "dryFruits": "🥜 ഡ്രൈ ഫ്രൂട്ട്സ്",
+      "basketSort": "🧺 തരംതിരിക്കാം",
+      "freshOrDry": "പഴമോ ഡ്രൈ ഫ്രൂട്ടോ? 🧺",
+      "freshBtn": "പഴം",
+      "dryBtn": "ഡ്രൈ ഫ്രൂട്ട്",
+      "meetAnimals": "🐾 മൃഗങ്ങൾ",
+      "soundQuiz": "🔊 ശബ്ദ ക്വിസ്",
+      "whoSound": "ആരുടെ ശബ്ദമാണിത്? 🐾",
+      "hearSound": "🔊 ശബ്ദം കേൾക്കൂ",
+      "shapesTab": "🔷 ആകൃതി",
+      "colorsTab": "🎨 നിറങ്ങൾ",
+      "findItTab": "🎯 കണ്ടെത്തൂ!",
+      "tapThe": "ഇത് തൊടൂ:",
+      "stickerBook": "🏆 സ്റ്റിക്കർ ബുക്ക്"
+    },
+    "numWords": [
+      "ഒന്ന്",
+      "രണ്ട്",
+      "മൂന്ന്",
+      "നാല്",
+      "അഞ്ച്",
+      "ആറ്",
+      "ഏഴ്",
+      "എട്ട്",
+      "ഒമ്പത്",
+      "പത്ത്"
+    ],
+    "fruits": [
+      "ആപ്പിൾ",
+      "പഴം",
+      "മാങ്ങ",
+      "മുന്തിരി",
+      "ഓറഞ്ച്",
+      "തണ്ണിമത്തൻ",
+      "സ്ട്രോബെറി",
+      "കൈതച്ചക്ക"
+    ],
+    "dryFruits": [
+      "ബദാം",
+      "കശുവണ്ടി",
+      "വാൽനട്ട്",
+      "പിസ്ത",
+      "നിലക്കടല",
+      "ഈന്തപ്പഴം"
+    ],
+    "animals": [
+      "സിംഹം",
+      "പശു",
+      "നായ",
+      "പൂച്ച",
+      "താറാവ്",
+      "തവള",
+      "ആട്",
+      "ആന",
+      "കുരങ്ങൻ",
+      "കോഴി",
+      "തേനീച്ച",
+      "മൂങ്ങ"
+    ],
+    "shapes": [
+      "വൃത്തം",
+      "ചതുരം",
+      "ത്രികോണം",
+      "നക്ഷത്രം",
+      "ഹൃദയം",
+      "വജ്രം",
+      "ഓവൽ",
+      "ചന്ദ്രക്കല"
+    ],
+    "colors": [
+      "ചുവപ്പ്",
+      "നീല",
+      "മഞ്ഞ",
+      "പച്ച",
+      "ഓറഞ്ച്",
+      "വയലറ്റ്",
+      "പിങ്ക്",
+      "തവിട്ട്"
+    ]
+  },
+  "bn": {
+    "name": "বাংলা (Bengali)",
+    "tts": "bn-IN",
+    "short": "বা",
+    "subtitle": "খেলো • শেখো • তৈরি করো • বয়স ৩+",
+    "gift": "উপহার",
+    "backHome": "হোমে যান",
+    "talk": "বলুন",
+    "tapLeo": "লিওকে ছুঁয়ে দেখো!",
+    "leoGreet": "নমস্কার {name}! আজকের খেলার জন্য তৈরি?",
+    "leoDefault": "নমস্কার! আজকের খেলার জন্য তৈরি?",
+    "adventureTitle": "আজকের ৩টি ধাপ",
+    "done": "সম্পন্ন",
+    "step1": "1. 🧩 শব্দ পাজল",
+    "step2": "2. ✏️ অক্ষর লেখা",
+    "step3": "3. 🎨 ছবি আঁকা",
+    "progressTitle": "{name}-এর অগ্রগতি",
+    "progressDefault": "শেখার অগ্রগতি",
+    "wordsLbl": "শব্দ",
+    "lettersLbl": "অক্ষর",
+    "numbersLbl": "সংখ্যা",
+    "puzzlesLbl": "পাজল",
+    "nav": {
+      "home": "🏠 হোম",
+      "wordpuzzle": "🧩 শব্দ পাজল",
+      "art": "🎨 আর্ট",
+      "story": "📖 গল্প",
+      "abc": "🔤 ABC",
+      "trace": "✏️ লেখা",
+      "numbers": "🔢 ১২৩",
+      "blocks": "🧱 ব্লক",
+      "mind": "🧠 বুদ্ধির খেলা",
+      "fruits": "🍓 ফল",
+      "animals": "🦁 প্রাণী",
+      "shapes": "🔷 আকার"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "শব্দ পাজল",
+        "শব্দ তৈরি করো"
+      ],
+      "art": [
+        "আর্ট স্টুডিও",
+        "রং ও স্ট্যাম্প"
+      ],
+      "story": [
+        "গল্পের সময়",
+        "পড়ো ও শোনো"
+      ],
+      "abc": [
+        "ABC ধ্বনি",
+        "A-Z অক্ষর ও শব্দ"
+      ],
+      "trace": [
+        "অক্ষর ট্রেস",
+        "আঙুল দিয়ে লেখো"
+      ],
+      "numbers": [
+        "১২৩ গণনা",
+        "১-১০ গুনতে শেখো"
+      ],
+      "blocks": [
+        "ব্লক বিল্ডার",
+        "বাড়ি ও রকেট"
+      ],
+      "mind": [
+        "বুদ্ধির খেলা",
+        "প্যাটার্ন ও মেমোরি"
+      ],
+      "fruits": [
+        "ফল ও শুকনো ফল",
+        "তাজা ও ড্রাই ফ্রুট"
+      ],
+      "animals": [
+        "প্রাণীর ডাক",
+        "চেনো ও কুইজ খেলো"
+      ],
+      "shapes": [
+        "আকার ও রং",
+        "শেখো ও খোঁজো"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "লিটল জিনিয়াসে স্বাগতম!",
+      "welcomeSub": "ভাষা, নাম এবং চোখের জন্য আরামদায়ক রং বেছে নিন",
+      "langLbl": "ভাষা",
+      "nameLbl": "শিশুর নাম",
+      "namePh": "নাম লিখুন",
+      "ageLbl": "বয়স",
+      "themeLbl": "চোখের আরামের রং",
+      "startBtn": "শুরু করুন! 🚀",
+      "nameErr": "অনুগ্রহ করে শিশুর নাম লিখুন!",
+      "parentsOnly": "🔒 শুধুমাত্র অভিভাবকদের জন্য",
+      "unlock": "খুলুন",
+      "tryAgain": "আবার চেষ্টা করুন।",
+      "parentCorner": "⚙️ অভিভাবক কর্নার ও রিপোর্ট",
+      "copyReport": "📋 রিপোর্ট কপি করুন",
+      "welcomeSetup": "👋 ওয়েলকাম সেটআপ",
+      "privacy": "📄 প্রাইভেসি পলিসি",
+      "resetStars": "রিসেট",
+      "doneBtn": "সম্পন্ন",
+      "voiceSpeed": "কণ্ঠের গতি",
+      "eyeColor": "কালার মোড",
+      "hearWord": "🔊 শব্দ শুনুন",
+      "tapFirst": "প্রথম অক্ষরে ট্যাপ করো!",
+      "nextWord": "পরের শব্দ ➡️",
+      "clear": "🧹 মুছুন",
+      "finish": "⭐ শেষ!",
+      "doneStar": "⭐ হয়েছে!",
+      "read": "🔊 পড়ুন",
+      "back": "⬅️ পিছনে",
+      "next": "পরে ➡️",
+      "listen": "🔊 শুনুন",
+      "countAloud": "🔊 জোরে গুনুন",
+      "tapObjects": "গুনতে ছবিতে ট্যাপ করো!",
+      "whatNext": "এর পরে কী আসবে? 🚂",
+      "oddOut": "আলাদা ছবিটি খোঁজো! 🔍",
+      "memMatch": "মেমোরি ম্যাচ 🃏",
+      "newGame": "🔄 নতুন খেলা",
+      "freshFruits": "🍎 তাজা ফল",
+      "dryFruits": "🥜 শুকনো ফল",
+      "basketSort": "🧺 ঝুড়িতে রাখো",
+      "freshOrDry": "তাজা ফল না শুকনো ফল? 🧺",
+      "freshBtn": "তাজা ফল",
+      "dryBtn": "শুকনো ফল",
+      "meetAnimals": "🐾 প্রাণীদের চেনো",
+      "soundQuiz": "🔊 শব্দের কুইজ",
+      "whoSound": "এটা কার ডাক? 🐾",
+      "hearSound": "🔊 শব্দ শুনুন",
+      "shapesTab": "🔷 আকার",
+      "colorsTab": "🎨 রং",
+      "findItTab": "🎯 খুঁজে বের করো!",
+      "tapThe": "এটি ছুঁয়ে দাও:",
+      "stickerBook": "🏆 স্টিকার বুক"
+    },
+    "numWords": [
+      "এক",
+      "দুই",
+      "তিন",
+      "চার",
+      "পাঁচ",
+      "ছয়",
+      "সাত",
+      "আট",
+      "নয়",
+      "দশ"
+    ],
+    "fruits": [
+      "আপেল",
+      "কলা",
+      "আম",
+      "আঙুর",
+      "কমলা",
+      "তরমুজ",
+      "স্ট্রবেরি",
+      "আনারস"
+    ],
+    "dryFruits": [
+      "বাদাম",
+      "কাজু",
+      "আখরোট",
+      "পেস্তা",
+      "চিনাবাদাম",
+      "খেজুর"
+    ],
+    "animals": [
+      "সিংহ",
+      "গরু",
+      "কুকুর",
+      "বিড়াল",
+      "হাঁস",
+      "ব্যাঙ",
+      "ভেড়া",
+      "হাতি",
+      "বানর",
+      "মোরগ",
+      "মৌমাছি",
+      "পেঁচা"
+    ],
+    "shapes": [
+      "বৃত্ত",
+      "বর্গ",
+      "ত্রিভুজ",
+      "তারা",
+      "হৃদয়",
+      "হীরা",
+      "ডিম্বাকৃতি",
+      "অর্ধচন্দ্র"
+    ],
+    "colors": [
+      "লাল",
+      "নীল",
+      "হলুদ",
+      "সবুজ",
+      "কমলা",
+      "বেগুনি",
+      "গোলাপি",
+      "বাদামী"
+    ]
+  },
+  "pa": {
+    "name": "ਪੰਜਾਬੀ (Punjabi)",
+    "tts": "pa-IN",
+    "short": "ਪੰ",
+    "subtitle": "ਖੇਡੋ • ਸਿੱਖੋ • ਬਣਾਓ • ਉਮਰ 3+",
+    "gift": "ਤੋਹਫ਼ਾ",
+    "backHome": "ਹੋਮ 'ਤੇ ਜਾਓ",
+    "talk": "ਬੋਲੋ",
+    "tapLeo": "ਲੀਓ ਨੂੰ ਛੂਹੋ!",
+    "leoGreet": "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ {name}! ਅੱਜ ਦੀ ਖੇਡ ਲਈ ਤਿਆਰ ਹੋ?",
+    "leoDefault": "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਅੱਜ ਦੀ ਖੇਡ ਲਈ ਤਿਆਰ ਹੋ?",
+    "adventureTitle": "ਅੱਜ ਦੇ 3 ਕਦਮ",
+    "done": "ਪੂਰਾ",
+    "step1": "1. 🧩 ਸ਼ਬਦ ਪਹੇਲੀ",
+    "step2": "2. ✏️ ਅੱਖਰ ਲਿਖੋ",
+    "step3": "3. 🎨 ਚਿੱਤਰ ਬਣਾਓ",
+    "progressTitle": "{name} ਦੀ ਤਰੱਕੀ",
+    "progressDefault": "ਸਿੱਖਣ ਦੀ ਤਰੱਕੀ",
+    "wordsLbl": "ਸ਼ਬਦ",
+    "lettersLbl": "ਅੱਖਰ",
+    "numbersLbl": "ਗਿਣਤੀ",
+    "puzzlesLbl": "ਪਹੇਲੀਆਂ",
+    "nav": {
+      "home": "🏠 ਹੋਮ",
+      "wordpuzzle": "🧩 ਸ਼ਬਦ",
+      "art": "🎨 ਆਰਟ",
+      "story": "📖 ਕਹਾਣੀ",
+      "abc": "🔤 ABC",
+      "trace": "✏️ ਲਿਖੋ",
+      "numbers": "🔢 123",
+      "blocks": "🧱 ਬਲਾਕ",
+      "mind": "🧠 ਦਿਮਾਗੀ ਖੇਡ",
+      "fruits": "🍓 ਫਲ",
+      "animals": "🦁 ਜਾਨਵਰ",
+      "shapes": "🔷 ਆਕਾਰ"
+    },
+    "cards": {
+      "wordpuzzle": [
+        "ਸ਼ਬਦ ਪਹੇਲੀ",
+        "ਸ਼ਬਦ ਬਣਾਓ"
+      ],
+      "art": [
+        "ਆਰਟ ਸਟੂਡੀਓ",
+        "ਰੰਗ ਭਰੋ"
+      ],
+      "story": [
+        "ਕਹਾਣੀ ਦਾ ਸਮਾਂ",
+        "ਪੜ੍ਹੋ ਤੇ ਸੁਣੋ"
+      ],
+      "abc": [
+        "ABC ਫੋਨਿਕਸ",
+        "A-Z ਅੱਖਰ"
+      ],
+      "trace": [
+        "ਅੱਖਰ ਲਿਖਣਾ",
+        "ਉਂਗਲ ਨਾਲ ਲਿਖੋ"
+      ],
+      "numbers": [
+        "123 ਗਿਣਤੀ",
+        "1-10 ਗਿਣੋ"
+      ],
+      "blocks": [
+        "ਬਲਾਕ ਬਿਲਡਰ",
+        "ਘਰ ਤੇ ਰਾਕੇਟ"
+      ],
+      "mind": [
+        "ਦਿਮਾਗੀ ਖੇਡ",
+        "ਪੈਟਰਨ ਤੇ ਮੈਮੋਰੀ"
+      ],
+      "fruits": [
+        "ਫਲ ਤੇ ਮੇਵੇ",
+        "ਤਾਜ਼ੇ ਤੇ ਸੁੱਕੇ ਫਲ"
+      ],
+      "animals": [
+        "ਜਾਨਵਰਾਂ ਦੀਆਂ ਆਵਾਜ਼ਾਂ",
+        "ਸੁਣੋ ਤੇ ਖੇਡੋ"
+      ],
+      "shapes": [
+        "ਆਕਾਰ ਤੇ ਰੰਗ",
+        "ਸਿੱਖੋ ਤੇ ਲੱਭੋ"
+      ]
+    },
+    "ui": {
+      "welcomeTitle": "ਲਿਟਲ ਜੀਨੀਅਸ ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ!",
+      "welcomeSub": "ਭਾਸ਼ਾ, ਨਾਮ ਅਤੇ ਅੱਖਾਂ ਲਈ ਸੁਰੱਖਿਅਤ ਰੰਗ ਚੁਣੋ",
+      "langLbl": "ਭਾਸ਼ਾ",
+      "nameLbl": "ਬੱਚੇ ਦਾ ਨਾਮ",
+      "namePh": "ਨਾਮ ਲਿਖੋ",
+      "ageLbl": "ਉਮਰ",
+      "themeLbl": "ਅੱਖਾਂ ਲਈ ਰੰਗ",
+      "startBtn": "ਸ਼ੁਰੂ ਕਰੋ! 🚀",
+      "nameErr": "ਕਿਰਪਾ ਕਰਕੇ ਨਾਮ ਲਿਖੋ!",
+      "parentsOnly": "🔒 ਸਿਰਫ਼ ਮਾਪਿਆਂ ਲਈ",
+      "unlock": "ਖੋਲ੍ਹੋ",
+      "tryAgain": "ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+      "parentCorner": "⚙️ ਮਾਪੇ ਕਾਰਨਰ ਤੇ ਰਿਪੋਰਟ",
+      "copyReport": "📋 ਰਿਪੋਰਟ ਕਾਪੀ ਕਰੋ",
+      "welcomeSetup": "👋 ਵੈਲਕਮ ਸੈੱਟਅੱਪ",
+      "privacy": "📄 ਪ੍ਰਾਈਵੇਸੀ ਪਾਲਿਸੀ",
+      "resetStars": "ਰੀਸੈੱਟ",
+      "doneBtn": "ਹੋ ਗਿਆ",
+      "voiceSpeed": "ਆਵਾਜ਼ ਦੀ ਗਤੀ",
+      "eyeColor": "ਰੰਗ ਮੋਡ",
+      "hearWord": "🔊 ਸ਼ਬਦ ਸੁਣੋ",
+      "tapFirst": "ਪਹਿਲਾ ਅੱਖਰ ਦਬਾਓ!",
+      "nextWord": "ਅਗਲਾ ਸ਼ਬਦ ➡️",
+      "clear": "🧹 ਸਾਫ਼",
+      "finish": "⭐ ਪੂਰਾ!",
+      "doneStar": "⭐ ਹੋ ਗਿਆ!",
+      "read": "🔊 ਪੜ੍ਹੋ",
+      "back": "⬅️ ਪਿੱਛੇ",
+      "next": "ਅੱਗੇ ➡️",
+      "listen": "🔊 ਸੁਣੋ",
+      "countAloud": "🔊 ਉੱਚੀ ਗਿਣੋ",
+      "tapObjects": "ਗਿਣਨ ਲਈ ਛੂਹੋ!",
+      "whatNext": "ਅੱਗੇ ਕੀ ਆਵੇਗਾ? 🚂",
+      "oddOut": "ਵੱਖਰਾ ਲੱਭੋ! 🔍",
+      "memMatch": "ਮੈਮੋਰੀ ਮੈਚ 🃏",
+      "newGame": "🔄 ਨਵੀਂ ਖੇਡ",
+      "freshFruits": "🍎 ਤਾਜ਼ੇ ਫਲ",
+      "dryFruits": "🥜 ਸੁੱਕੇ ਮੇਵੇ",
+      "basketSort": "🧺 ਟੋਕਰੀ ਵਿੱਚ ਪਾਓ",
+      "freshOrDry": "ਤਾਜ਼ਾ ਫਲ ਜਾਂ ਸੁੱਕਾ ਮੇਵਾ? 🧺",
+      "freshBtn": "ਤਾਜ਼ਾ ਫਲ",
+      "dryBtn": "ਸੁੱਕਾ ਮੇਵਾ",
+      "meetAnimals": "🐾 ਜਾਨਵਰ",
+      "soundQuiz": "🔊 ਆਵਾਜ਼ ਕੁਇਜ਼",
+      "whoSound": "ਇਹ ਕਿਸ ਦੀ ਆਵਾਜ਼ ਹੈ? 🐾",
+      "hearSound": "🔊 ਆਵਾਜ਼ ਸੁਣੋ",
+      "shapesTab": "🔷 ਆਕਾਰ",
+      "colorsTab": "🎨 ਰੰਗ",
+      "findItTab": "🎯 ਲੱਭੋ!",
+      "tapThe": "ਇਸ ਨੂੰ ਛੂਹੋ:",
+      "stickerBook": "🏆 ਸਟਿੱਕਰ ਬੁੱਕ"
+    },
+    "numWords": [
+      "ਇੱਕ",
+      "ਦੋ",
+      "ਤਿੰਨ",
+      "ਚਾਰ",
+      "ਪੰਜ",
+      "ਛੇ",
+      "ਸੱਤ",
+      "ਅੱਠ",
+      "ਨੌਂ",
+      "ਦਸ"
+    ],
+    "fruits": [
+      "ਸੇਬ",
+      "ਕੇਲਾ",
+      "ਅੰਬ",
+      "ਅੰਗੂਰ",
+      "ਸੰਤਰਾ",
+      "ਤਰਬੂਜ਼",
+      "ਸਟ੍ਰਾਬੇਰੀ",
+      "ਅਨਾਨਾਸ"
+    ],
+    "dryFruits": [
+      "ਬਦਾਮ",
+      "ਕਾਜੂ",
+      "ਅਖਰੋਟ",
+      "ਪਿਸਤਾ",
+      "ਮੂੰਗਫਲੀ",
+      "ਖਜੂਰ"
+    ],
+    "animals": [
+      "ਸ਼ੇਰ",
+      "ਗਾਂ",
+      "ਕੁੱਤਾ",
+      "ਬਿੱਲੀ",
+      "ਬੱਤਖ",
+      "ਡੱਡੂ",
+      "ਭੇਡ",
+      "ਹਾਥੀ",
+      "ਬਾਂਦਰ",
+      "ਮੁਰਗਾ",
+      "ਮਧੂ-ਮੱਖੀ",
+      "ਉੱਲੂ"
+    ],
+    "shapes": [
+      "ਗੋਲ",
+      "ਵਰਗ",
+      "ਤਿਕੋਣ",
+      "ਤਾਰਾ",
+      "ਦਿਲ",
+      "ਹੀਰਾ",
+      "ਅੰਡਾਕਾਰ",
+      "ਅੱਧਾ ਚੰਨ"
+    ],
+    "colors": [
+      "ਲਾਲ",
+      "ਨੀਲਾ",
+      "ਪੀਲਾ",
+      "ਹਰਾ",
+      "ਸੰਤਰੀ",
+      "ਜਾਮਨੀ",
+      "ਗੁਲਾਬੀ",
+      "ਭੂਰਾ"
+    ]
+  }
+};
+
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js?v=11').catch(() => {});
+      });
+    }
+
+    let audioCtx = null, preferredVoice = null, speakTimer = null;
+    function getLangPack() { const l = (typeof state !== 'undefined' && state.lang) ? state.lang : 'en'; return (window.I18N && window.I18N[l]) || (window.I18N && window.I18N.en) || {}; }
+    function loadVoice() {
+      if (!('speechSynthesis' in window)) return;
+      const v = window.speechSynthesis.getVoices();
+      const tts = (getLangPack().tts || 'en-US');
+      const short = tts.split('-')[0].toLowerCase();
+      preferredVoice = null;
+      if (v && v.length) {
+        preferredVoice = v.find(x => (x.lang || '').toLowerCase() === tts.toLowerCase())
+          || v.find(x => (x.lang || '').toLowerCase().startsWith(short))
+          || (short === 'en' ? v.find(x => (x.lang || '').toLowerCase().startsWith('en')) : null);
+      }
+    }
+    // voiceschanged listener registered after state initialization
+    function ensureAudioCtx(cb) { const Ctx = window.AudioContext || window.webkitAudioContext; if (!Ctx) return; if (!audioCtx) audioCtx = new Ctx(); if (audioCtx.state === 'suspended') audioCtx.resume().then(() => cb(audioCtx)).catch(() => {}); else cb(audioCtx); }
+    function playTone(freq, dur = 0.14, type = 'sine', delay = 0) {
+      if (!state.soundEnabled) return;
+      ensureAudioCtx((ctx) => {
+        const now = ctx.currentTime + delay, osc = ctx.createOscillator(), g = ctx.createGain();
+        osc.type = type; osc.frequency.setValueAtTime(freq, now); g.gain.setValueAtTime(0.001, now); g.gain.linearRampToValueAtTime(0.26, now + 0.015); g.gain.exponentialRampToValueAtTime(0.001, now + dur);
+        osc.connect(g); g.connect(ctx.destination); osc.start(now); osc.stop(now + dur + 0.02);
+      });
+    }
+    function playPop() { playTone(520, 0.08, 'sine', 0); playTone(720, 0.08, 'sine', 0.05); }
+    function playWin() { playTone(523, 0.12, 'triangle', 0); playTone(659, 0.12, 'triangle', 0.1); playTone(784, 0.16, 'triangle', 0.2); playTone(1046, 0.26, 'triangle', 0.32); }
+    function playOops() { playTone(270, 0.14, 'sine', 0); playTone(230, 0.18, 'sine', 0.12); }
+    function speak(text) {
+      if (!state.soundEnabled) return;
+      if (!('speechSynthesis' in window)) { playPop(); return; }
+      try {
+        if (speakTimer) clearTimeout(speakTimer);
+        if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) window.speechSynthesis.cancel();
+        speakTimer = setTimeout(() => {
+          if (!preferredVoice) loadVoice();
+          loadVoice(); const u = new SpeechSynthesisUtterance(text); u.lang = getLangPack().tts || 'en-US'; if (preferredVoice) u.voice = preferredVoice;
+          u.rate = state.speechRate; u.pitch = 1.15; u.onerror = () => playPop(); window.speechSynthesis.speak(u);
+        }, 40);
+      } catch (_) { playPop(); }
+    }
+
+    let confettiTimer = null;
+    function launchConfetti() {
+      const c = document.getElementById('confettiCanvas'), ctx = c.getContext('2d'); c.width = window.innerWidth; c.height = window.innerHeight;
+      if (confettiTimer) cancelAnimationFrame(confettiTimer);
+      const cols = ['#facc15', '#38bdf8', '#f472b6', '#4ade80', '#fb923c'];
+      const pts = Array.from({ length: 45 }, () => ({ x: Math.random() * c.width, y: -20, r: 6 + Math.random() * 5, col: cols[Math.floor(Math.random() * cols.length)], vy: 3 + Math.random() * 4, vx: (Math.random() - 0.5) * 3 }));
+      let f = 0;
+      function draw() { ctx.clearRect(0, 0, c.width, c.height); pts.forEach(p => { p.x += p.vx; p.y += p.vy; ctx.fillStyle = p.col; ctx.fillRect(p.x, p.y, p.r, p.r * 1.3); }); if (++f < 85) confettiTimer = requestAnimationFrame(draw); else ctx.clearRect(0, 0, c.width, c.height); }
+      confettiTimer = requestAnimationFrame(draw);
+    }
+    let toastT = null;
+    function showToast(icon, text) {
+      const b = document.getElementById('toastBanner'); document.getElementById('toastIcon').textContent = icon; document.getElementById('toastText').textContent = text;
+      b.classList.remove('hidden'); if (toastT) clearTimeout(toastT); toastT = setTimeout(() => b.classList.add('hidden'), 2100);
+    }
+
+    const LEO_LINES = ['Hi! I am Leo! Let us play and learn!', 'Roar! You are a super smart star!', 'Try the Word Puzzle or Art Studio today!', 'Yummy apples and almonds make us strong!'];
+    const WORD_PUZZLES = [
+      { word: 'CAT', icon: '🐱', extra: ['B', 'M'] },
+      { word: 'DOG', icon: '🐶', extra: ['P', 'R'] },
+      { word: 'SUN', icon: '☀️', extra: ['A', 'T'] },
+      { word: 'BUS', icon: '🚌', extra: ['K', 'O'] },
+      { word: 'STAR', icon: '⭐', extra: ['M', 'L'] },
+      { word: 'BALL', icon: '⚽', extra: ['C', 'T'] },
+      { word: 'FISH', icon: '🐟', extra: ['M', 'R'] },
+      { word: 'CAKE', icon: '🎂', extra: ['B', 'P'] },
+      { word: 'TREE', icon: '🌳', extra: ['S', 'M'] },
+      { word: 'BIRD', icon: '🐦', extra: ['K', 'L'] },
+      { word: 'MOON', icon: '🌙', extra: ['S', 'P'] },
+      { word: 'FROG', icon: '🐸', extra: ['T', 'B'] },
+      { word: 'DUCK', icon: '🦆', extra: ['M', 'S'] },
+      { word: 'MILK', icon: '🥛', extra: ['B', 'A'] },
+      { word: 'BOOK', icon: '📖', extra: ['S', 'T'] },
+      { word: 'LION', icon: '🦁', extra: ['M', 'T'] },
+      { word: 'BEAR', icon: '🐻', extra: ['K', 'S'] },
+      { word: 'RAIN', icon: '🌧️', extra: ['P', 'L'] },
+      { word: 'SHIP', icon: '🚢', extra: ['C', 'M'] },
+      { word: 'KITE', icon: '🪁', extra: ['B', 'R'] }
+    ];
+    const ART_COLORS = ['#ef4444', '#3b82f6', '#eab308', '#22c55e', '#a855f7', '#f97316'];
+    const ART_STAMPS = ['🦁', '⭐', '🍎', '🚀', '🌈', '🦋', '🐶', '🌸'];
+    const STORIES = [
+      {
+        title: "Leo's Picnic 📖",
+        pages: [
+          { icons: [{ e: '🦁', s: 'Leo the Lion!' }, { e: '☀️', s: 'Sunny morning!' }], text: 'One sunny morning, Leo the Lion went on a picnic!' },
+          { icons: [{ e: '🍎', s: 'Red Apple!' }, { e: '🍌', s: 'Yellow Banana!' }], text: 'Leo packed a crunchy Red Apple and a sweet Yellow Banana.' },
+          { icons: [{ e: '🌰', s: 'Healthy Almond!' }, { e: '🥭', s: 'Yummy Mango!' }], text: 'His friend Monkey brought crunchy Almonds and a juicy Mango!' },
+          { icons: [{ e: '🎈', s: 'Party Balloon!' }, { e: '⭐', s: 'You earned a star!' }], text: 'They shared, counted, and played all day! Great job!' }
+        ]
+      },
+      {
+        title: "Space Rocket 🚀",
+        pages: [
+          { icons: [{ e: '🐼', s: 'Panda Astronaut!' }, { e: '🚀', s: 'Red Rocket!' }], text: 'Panda put on a shiny helmet and hopped into a big Rocket!' },
+          { icons: [{ e: '🌍', s: 'Planet Earth!' }, { e: '⭐', s: 'Twinkle Star!' }], text: 'Three, two, one, blast off! Bye-bye Earth, hello stars!' },
+          { icons: [{ e: '🌙', s: 'Cheese Moon!' }, { e: '🛸', s: 'Friendly Alien!' }], text: 'Panda waved at a friendly green alien on the glowing Moon!' },
+          { icons: [{ e: '🏡', s: 'Home Sweet Home!' }, { e: '🏆', s: 'Super Explorer!' }], text: 'Rocket zoomed safely back home for bedtime. What a trip!' }
+        ]
+      },
+      {
+        title: "Rainbow Day 🌈",
+        pages: [
+          { icons: [{ e: '🌧️', s: 'Gentle Rain!' }, { e: '🐸', s: 'Happy Frog!' }], text: 'Pitter-patter! Little Frog danced in the cool morning rain.' },
+          { icons: [{ e: '☀️', s: 'Bright Sun!' }, { e: '🌈', s: 'Colorful Rainbow!' }], text: 'Soon the warm Sun peeked out and painted a giant Rainbow!' },
+          { icons: [{ e: '🦋', s: 'Blue Butterfly!' }, { e: '🌸', s: 'Pink Flower!' }], text: 'Butterflies and bees flew around the bright blooming flowers.' },
+          { icons: [{ e: '🍉', s: 'Sweet Watermelon!' }, { e: '😊', s: 'Happy Friends!' }], text: 'Everyone shared sweet watermelon under the rainbow sky!' }
+        ]
+      },
+      {
+        title: "Jungle Friends 🐘",
+        pages: [
+          { icons: [{ e: '🐘', s: 'Big Elephant!' }, { e: '🦒', s: 'Tall Giraffe!' }], text: 'In the green jungle, Big Elephant met Tall Giraffe by the river.' },
+          { icons: [{ e: '🐒', s: 'Playful Monkey!' }, { e: '🍌', s: 'Sweet Banana!' }], text: 'Playful Monkey swung down from a tree with sweet bananas!' },
+          { icons: [{ e: '🦜', s: 'Green Parrot!' }, { e: '🎶', s: 'Happy Song!' }], text: 'Parrot sang a cheerful song while all the animals danced together.' },
+          { icons: [{ e: '🌙', s: 'Sleepy Moon!' }, { e: '⭐', s: 'Good Night!' }], text: 'When the Moon rose, all the jungle friends said Good Night!' }
+        ]
+      },
+      {
+        title: "Ocean Explorer 🐳",
+        pages: [
+          { icons: [{ e: '🐳', s: 'Blue Whale!' }, { e: '🌊', s: 'Ocean Waves!' }], text: 'Deep in the blue ocean, Baby Whale splashed in the cool waves!' },
+          { icons: [{ e: '🐠', s: 'Orange Fish!' }, { e: '🦀', s: 'Red Crab!' }], text: 'Whale met a tiny Orange Fish and a funny sideways Red Crab.' },
+          { icons: [{ e: '🐙', s: 'Eight-arm Octopus!' }, { e: '🐚', s: 'Pretty Shell!' }], text: 'Octopus showed everyone a shiny pink seashell on the sand.' },
+          { icons: [{ e: '🐬', s: 'Jumping Dolphin!' }, { e: '🏆', s: 'Ocean Star!' }], text: 'Dolphin jumped high in the air and cheered for you!' }
+        ]
+      }
+    ];
+    const ABC = [
+      { l: 'A', w: 'Apple', e: '🍎', p: 'A is for Apple!' }, { l: 'B', w: 'Ball', e: '⚽', p: 'B is for Ball!' }, { l: 'C', w: 'Cat', e: '🐱', p: 'C is for Cat!' },
+      { l: 'D', w: 'Dog', e: '🐶', p: 'D is for Dog!' }, { l: 'E', w: 'Elephant', e: '🐘', p: 'E is for Elephant!' }, { l: 'F', w: 'Fish', e: '🐟', p: 'F is for Fish!' },
+      { l: 'G', w: 'Grapes', e: '🍇', p: 'G is for Grapes!' }, { l: 'H', w: 'Hat', e: '👒', p: 'H is for Hat!' }, { l: 'I', w: 'Ice Cream', e: '🍦', p: 'I is for Ice Cream!' },
+      { l: 'J', w: 'Juice', e: '🧃', p: 'J is for Juice!' }, { l: 'K', w: 'Kite', e: '🪁', p: 'K is for Kite!' }, { l: 'L', w: 'Lion', e: '🦁', p: 'L is for Lion!' },
+      { l: 'M', w: 'Monkey', e: '🐵', p: 'M is for Monkey!' }, { l: 'N', w: 'Nest', e: '🪺', p: 'N is for Nest!' }, { l: 'O', w: 'Orange', e: '🍊', p: 'O is for Orange!' },
+      { l: 'P', w: 'Panda', e: '🐼', p: 'P is for Panda!' }, { l: 'Q', w: 'Queen', e: '👑', p: 'Q is for Queen!' }, { l: 'R', w: 'Rabbit', e: '🐰', p: 'R is for Rabbit!' },
+      { l: 'S', w: 'Sun', e: '☀️', p: 'S is for Sun!' }, { l: 'T', w: 'Tiger', e: '🐯', p: 'T is for Tiger!' }, { l: 'U', w: 'Umbrella', e: '☂️', p: 'U is for Umbrella!' },
+      { l: 'V', w: 'Van', e: '🚐', p: 'V is for Van!' }, { l: 'W', w: 'Whale', e: '🐳', p: 'W is for Whale!' }, { l: 'X', w: 'Xylophone', e: '🎶', p: 'X is for Xylophone!' },
+      { l: 'Y', w: 'Yoyo', e: '🪀', p: 'Y is for Yoyo!' }, { l: 'Z', w: 'Zebra', e: '🦓', p: 'Z is for Zebra!' }
+    ];
+    const NUMS = [{ n: 1, w: 'One', e: '🌟' }, { n: 2, w: 'Two', e: '🍎' }, { n: 3, w: 'Three', e: '🐶' }, { n: 4, w: 'Four', e: '🦋' }, { n: 5, w: 'Five', e: '🍓' }, { n: 6, w: 'Six', e: '🎈' }, { n: 7, w: 'Seven', e: '🐟' }, { n: 8, w: 'Eight', e: '🌸' }, { n: 9, w: 'Nine', e: '🚗' }, { n: 10, w: 'Ten', e: '⭐' }];
+    const BLOCKS = [{ id: 'red', icon: '🟥', bg: 'bg-red-500 border-red-600' }, { id: 'blue', icon: '🟦', bg: 'bg-blue-500 border-blue-600' }, { id: 'yellow', icon: '🟨', bg: 'bg-yellow-400 border-yellow-500' }, { id: 'green', icon: '🟩', bg: 'bg-green-500 border-green-600' }, { id: 'roof', icon: '🔺', bg: 'bg-orange-400 border-orange-500' }, { id: 'window', icon: '🪟', bg: 'bg-sky-200 border-sky-400' }];
+    const BLUEPRINTS = {
+      free: Array(30).fill(null),
+      house: [null,null,'roof','roof',null,null, null,'roof','red','red','roof',null, null,'yellow','window','window','yellow',null, null,'yellow','red','red','yellow',null, 'green','green','green','green','green','green'],
+      rocket: [null,null,'roof','roof',null,null, null,null,'blue','blue',null,null, null,null,'window','window',null,null, null,'red','blue','blue','red',null, null,'yellow',null,null,'yellow',null],
+      tree: [null,null,'green','green',null,null, null,'green','green','green','green',null, null,'green','green','green','green',null, null,null,'red','red',null,null, 'green','green','red','red','green','green'],
+      train: [null,'roof',null,null,null,null, null,'red','blue','blue','yellow',null, 'red','red','window','blue','window','yellow', 'red','red','red','blue','yellow','yellow', null,'yellow',null,'yellow',null,'yellow']
+    };
+    const ANIMALS = [
+      { n: 'Lion', e: '🦁', s: 'Roar!' }, { n: 'Cow', e: '🐄', s: 'Moo!' },
+      { n: 'Dog', e: '🐶', s: 'Woof Woof!' }, { n: 'Cat', e: '🐱', s: 'Meow!' },
+      { n: 'Duck', e: '🦆', s: 'Quack Quack!' }, { n: 'Frog', e: '🐸', s: 'Ribbit!' },
+      { n: 'Sheep', e: '🐑', s: 'Baa Baa!' }, { n: 'Elephant', e: '🐘', s: 'Pawoo!' },
+      { n: 'Monkey', e: '🐵', s: 'Ooh Ooh!' }, { n: 'Rooster', e: '🐓', s: 'Cock a doodle doo!' },
+      { n: 'Bee', e: '🐝', s: 'Buzz!' }, { n: 'Owl', e: '🦉', s: 'Hoo Hoo!' }
+    ];
+    const SHAPES = [
+      { n: 'Circle', e: '⭕', d: 'Round like a ball!' }, { n: 'Square', e: '🟦', d: 'Four equal sides!' },
+      { n: 'Triangle', e: '🔺', d: 'Three pointy corners!' }, { n: 'Star', e: '⭐', d: 'Shines in the sky!' },
+      { n: 'Heart', e: '❤️', d: 'Full of love!' }, { n: 'Diamond', e: '💎', d: 'Sparkly shape!' },
+      { n: 'Oval', e: '🥚', d: 'Shaped like an egg!' }, { n: 'Crescent', e: '🌙', d: 'Shaped like the moon!' }
+    ];
+    const COLORS_LIST = [
+      { n: 'Red', hex: '#ef4444', e: '🍎' }, { n: 'Blue', hex: '#3b82f6', e: '🐳' },
+      { n: 'Yellow', hex: '#eab308', e: '☀️' }, { n: 'Green', hex: '#22c55e', e: '🐸' },
+      { n: 'Orange', hex: '#f97316', e: '🍊' }, { n: 'Purple', hex: '#a855f7', e: '🍇' },
+      { n: 'Pink', hex: '#ec4899', e: '🌸' }, { n: 'Brown', hex: '#92400e', e: '🐻' }
+    ];
+    const PATTERNS = [
+      { seq: ['🔴', '🔵', '🔴', '🔵', '🔴'], ans: '🔵', opts: ['🔵', '🟡', '🟢'] },
+      { seq: ['⭐', '🌙', '⭐', '🌙', '⭐'], ans: '🌙', opts: ['☀️', '🌙', '⭐'] },
+      { seq: ['🍎', '🍌', '🍎', '🍌', '🍎'], ans: '🍌', opts: ['🍎', '🍇', '🍌'] },
+      { seq: ['🐶', '🐱', '🐶', '🐱', '🐶'], ans: '🐱', opts: ['🐶', '🐱', '🐸'] },
+      { seq: ['🚗', '🚌', '🚗', '🚌', '🚗'], ans: '🚌', opts: ['🚀', '🚌', '🚲'] },
+      { seq: ['🔺', '🟦', '🔺', '🟦', '🔺'], ans: '🟦', opts: ['🟦', '🔴', '⭐'] },
+      { seq: ['🌸', '🌿', '🌸', '🌿', '🌸'], ans: '🌿', opts: ['🌿', '🍎', '☀️'] },
+      { seq: ['🍓', '🍇', '🍓', '🍇', '🍓'], ans: '🍇', opts: ['🍌', '🍇', '🍊'] }
+    ];
+    const ODDS = [
+      { items: [{ e: '🍎', n: 'Apple' }, { e: '🍌', n: 'Banana' }, { e: '🍇', n: 'Grapes' }, { e: '🚗', n: 'Car' }], ans: 'Car' },
+      { items: [{ e: '🐶', n: 'Dog' }, { e: '🐱', n: 'Cat' }, { e: '🦁', n: 'Lion' }, { e: '🎈', n: 'Balloon' }], ans: 'Balloon' },
+      { items: [{ e: '🚌', n: 'Bus' }, { e: '🚗', n: 'Car' }, { e: '🚲', n: 'Bike' }, { e: '🍓', n: 'Strawberry' }], ans: 'Strawberry' },
+      { items: [{ e: '🐟', n: 'Fish' }, { e: '🐳', n: 'Whale' }, { e: '🐸', n: 'Frog' }, { e: '📖', n: 'Book' }], ans: 'Book' },
+      { items: [{ e: '☀️', n: 'Sun' }, { e: '🌙', n: 'Moon' }, { e: '⭐', n: 'Star' }, { e: '🎂', n: 'Cake' }], ans: 'Cake' },
+      { items: [{ e: '🌰', n: 'Almond' }, { e: '🥜', n: 'Peanut' }, { e: '🌴', n: 'Date' }, { e: '🚀', n: 'Rocket' }], ans: 'Rocket' }
+    ];
+    const FRUITS = [{ name: 'Apple', icon: '🍎', type: 'fresh' }, { name: 'Banana', icon: '🍌', type: 'fresh' }, { name: 'Mango', icon: '🥭', type: 'fresh' }, { name: 'Grapes', icon: '🍇', type: 'fresh' }, { name: 'Orange', icon: '🍊', type: 'fresh' }, { name: 'Watermelon', icon: '🍉', type: 'fresh' }, { name: 'Strawberry', icon: '🍓', type: 'fresh' }, { name: 'Pineapple', icon: '🍍', type: 'fresh' }];
+    const DRY_FRUITS = [{ name: 'Almond', icon: '🌰', type: 'dry' }, { name: 'Cashew', icon: '🫘', type: 'dry' }, { name: 'Walnut', icon: '🧠', type: 'dry' }, { name: 'Pistachio', icon: '🫛', type: 'dry' }, { name: 'Peanut', icon: '🥜', type: 'dry' }, { name: 'Date', icon: '🌴', type: 'dry' }];
+    const STICKERS = [{ icon: '🚀', name: 'Rocket', req: 1 }, { icon: '🦕', name: 'Dino', req: 3 }, { icon: '🦄', name: 'Unicorn', req: 5 }, { icon: '🌈', name: 'Rainbow', req: 8 }, { icon: '👑', name: 'Crown', req: 12 }, { icon: '🏆', name: 'Genius', req: 16 }];
+
+    const todayKey = new Date().toISOString().slice(0, 10);
+    const state = {
+      view: 'home', soundEnabled: true, speechRate: 0.88, stars: 0, giftClaimed: false,
+      childName: '', childAge: '3', theme: 'pastel', lang: 'en',
+      storyIdx: 0,
+      progress: { words: [], letters: [], numbers: [], art: 0, stories: 0, mind: 0 },
+      quests: { q1: false, q2: false, q3: false },
+      wpIdx: 0, wpProgress: 0,
+      artMode: 'draw', artCol: ART_COLORS[0], artStamp: ART_STAMPS[0],
+      storyPage: 0, abcIdx: 0, traceIdx: 0, traceCol: '#0284c7', numSel: 3,
+      blockSel: 'red', bp: 'free', board: Array(30).fill(null),
+      patIdx: 0, patDone: false, oddIdx: 0, oddDone: false,
+      memCards: [], memFlip: [], memMatch: 0, memLock: false, sortItem: null, gateAns: 7
+    };
+    try {
+      const s = JSON.parse(localStorage.getItem('little_genius_ultra_v1') || '{}');
+      if (typeof s.stars === 'number') state.stars = s.stars;
+      if (typeof s.speechRate === 'number') state.speechRate = s.speechRate;
+      if (typeof s.childName === 'string') state.childName = s.childName;
+      if (typeof s.childAge === 'string') state.childAge = s.childAge;
+      if (typeof s.theme === 'string') state.theme = s.theme;
+      if (typeof s.lang === 'string' && window.I18N && window.I18N[s.lang]) state.lang = s.lang;
+      if (s.progress && typeof s.progress === 'object') {
+        state.progress = {
+          words: Array.isArray(s.progress.words) ? s.progress.words : [],
+          letters: Array.isArray(s.progress.letters) ? s.progress.letters : [],
+          numbers: Array.isArray(s.progress.numbers) ? s.progress.numbers : [],
+          art: Number(s.progress.art) || 0,
+          stories: Number(s.progress.stories) || 0,
+          mind: Number(s.progress.mind) || 0
+        };
+      }
+      if (s.date === todayKey) {
+        if (typeof s.giftClaimed === 'boolean') state.giftClaimed = s.giftClaimed;
+        if (s.quests && typeof s.quests === 'object') state.quests = { ...state.quests, ...s.quests };
+      }
+    } catch (_) {}
+    function applyThemeAndGreeting() {
+      document.body.classList.remove('theme-pastel', 'theme-eyecare', 'theme-night');
+      document.body.classList.add('theme-' + (state.theme || 'pastel'));
+      const lp = getLangPack();
+      const greet = document.getElementById('leoSpeechText');
+      if (greet) {
+        if (state.childName && lp.leoGreet) greet.textContent = lp.leoGreet.replace('{name}', state.childName);
+        else if (lp.leoDefault) greet.textContent = lp.leoDefault;
+      }
+    }
+    function applyLanguage() {
+      const lp = getLangPack();
+      if (!lp || !lp.ui) return;
+      document.documentElement.lang = state.lang || 'en';
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el && val !== undefined) el.textContent = val; };
+      const sub = document.querySelector('header p'); if (sub) sub.textContent = lp.subtitle;
+      setTxt('giftBtnText', lp.gift);
+      const backSpan = document.querySelector('#subViewBackBtn span:last-child'); if (backSpan) backSpan.textContent = lp.backHome;
+      setTxt('leoSpeakPromptBtn', '🔊 ' + lp.talk);
+      const tapBadge = document.querySelector('#view-home span.uppercase'); if (tapBadge) tapBadge.textContent = lp.tapLeo;
+      const advTitle = document.querySelector('#view-home h3.text-xl'); if (advTitle) advTitle.textContent = '🗺️ ' + lp.adventureTitle;
+      const qs1 = document.querySelector('#questStep1 span:first-child'); if (qs1) qs1.textContent = lp.step1;
+      const qs2 = document.querySelector('#questStep2 span:first-child'); if (qs2) qs2.textContent = lp.step2;
+      const qs3 = document.querySelector('#questStep3 span:first-child'); if (qs3) qs3.textContent = lp.step3;
+
+      // Nav buttons
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        if (lp.nav && lp.nav[b.dataset.view]) b.textContent = lp.nav[b.dataset.view];
+      });
+      // Home world cards
+      document.querySelectorAll('#view-home .jump-card[data-jump]').forEach(c => {
+        const k = c.dataset.jump;
+        if (lp.cards && lp.cards[k]) {
+          const h3 = c.querySelector('h3'); const p = c.querySelector('p');
+          if (h3) h3.textContent = lp.cards[k][0];
+          if (p) p.textContent = lp.cards[k][1];
+        }
+      });
+
+      // Labels & buttons across views
+      setTxt('wLangLbl', lp.ui.langLbl);
+      setTxt('wNameLbl', lp.ui.nameLbl);
+      const wIn = document.getElementById('welcomeNameInput'); if (wIn) wIn.placeholder = lp.ui.namePh;
+      setTxt('welcomeStartBtn', lp.ui.startBtn);
+      setTxt('welcomeError', lp.ui.nameErr);
+      const wTitle = document.querySelector('#welcomeModal h2'); if (wTitle) wTitle.textContent = lp.ui.welcomeTitle;
+      const wSub = document.querySelector('#welcomeModal p.text-slate-500'); if (wSub) wSub.textContent = lp.ui.welcomeSub;
+
+      setTxt('wpSpeakBtn', lp.ui.hearWord);
+      setTxt('wpNextBtn', lp.ui.nextWord);
+      setTxt('artClearBtn', lp.ui.clear);
+      setTxt('artDoneBtn', lp.ui.finish);
+      setTxt('storyReadBtn', lp.ui.read);
+      setTxt('storyPrevBtn', lp.ui.back);
+      setTxt('storyNextBtn', lp.ui.next);
+      setTxt('abcSpeakBtn', lp.ui.listen);
+      setTxt('traceClearBtn', lp.ui.clear);
+      setTxt('traceDoneBtn', lp.ui.doneStar);
+      setTxt('numCountAloudBtn', lp.ui.countAloud);
+      setTxt('blockClearBtn', lp.ui.clear);
+      setTxt('blockFinishBtn', lp.ui.finish);
+      setTxt('memoryRestartBtn', lp.ui.newGame);
+      setTxt('subFreshBtn', lp.ui.freshFruits);
+      setTxt('subDryBtn', lp.ui.dryFruits);
+      setTxt('subSortBtn', lp.ui.basketSort);
+      setTxt('aniTabLearn', lp.ui.meetAnimals);
+      setTxt('aniTabQuiz', lp.ui.soundQuiz);
+      setTxt('aniQuizSpeakBtn', lp.ui.hearSound);
+      setTxt('shpTabShapes', lp.ui.shapesTab);
+      setTxt('shpTabColors', lp.ui.colorsTab);
+      setTxt('shpTabQuiz', lp.ui.findItTab);
+      setTxt('copyReportBtn', lp.ui.copyReport);
+      setTxt('openWelcomeFromParentBtn', lp.ui.welcomeSetup);
+      setTxt('resetProgressBtn', lp.ui.resetStars);
+      setTxt('saveParentBtn', lp.ui.doneBtn);
+
+      // Sync dropdowns
+      ['headerLangSelect', 'welcomeLangSelect', 'parentLangSelect'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = state.lang;
+      });
+
+      // Re-render localized data views
+      applyThemeAndGreeting();
+      updateProgressUI();
+      renderNums();
+      renderFruitsAndDry();
+      renderAnimals();
+      renderShapesAndColors();
+    }
+    function saveState() {
+      try {
+        localStorage.setItem('little_genius_ultra_v1', JSON.stringify({
+          stars: state.stars,
+          speechRate: state.speechRate,
+          childName: state.childName,
+          childAge: state.childAge,
+          theme: state.theme,
+          lang: state.lang,
+          progress: state.progress,
+          date: todayKey,
+          giftClaimed: state.giftClaimed,
+          quests: state.quests
+        }));
+      } catch (_) {}
+    }
+    function updateStarsUI() {
+      document.getElementById('starCountDisplay').textContent = state.stars;
+      document.getElementById('parentStarsStat').textContent = `${state.stars} ⭐`;
+      updateProgressUI();
+    }
+    function updateProgressUI() {
+      const p = state.progress;
+      const wCount = p.words.length, lCount = p.letters.length, nCount = p.numbers.length;
+      const mastery = Math.min(100, Math.round(((wCount / WORD_PUZZLES.length) * 35) + ((lCount / 26) * 35) + ((nCount / 10) * 20) + (Math.min(10, p.mind + p.art + p.stories) / 10 * 10)));
+      const titleEl = document.getElementById('homeProgressTitle');
+      const lpProg = getLangPack(); if (titleEl) titleEl.textContent = state.childName ? (lpProg.progressTitle || "{name}'s Learning Progress").replace('{name}', state.childName) : (lpProg.progressDefault || 'Learning Progress');
+      const pctEl = document.getElementById('homeMasteryPct');
+      if (pctEl) pctEl.textContent = `${mastery}%`;
+      const barEl = document.getElementById('homeMasteryBar');
+      if (barEl) barEl.style.width = `${mastery}%`;
+      if (document.getElementById('hpWords')) document.getElementById('hpWords').textContent = `${wCount}/${WORD_PUZZLES.length}`;
+      if (document.getElementById('hpLetters')) document.getElementById('hpLetters').textContent = `${lCount}/26`;
+      if (document.getElementById('hpNumbers')) document.getElementById('hpNumbers').textContent = `${nCount}/10`;
+      if (document.getElementById('hpMind')) document.getElementById('hpMind').textContent = `${p.mind}`;
+      if (document.getElementById('parentReportHeader')) {
+        document.getElementById('parentReportHeader').textContent = state.childName ? `📊 ${state.childName} (Age ${state.childAge}) Report` : '📊 Progress Report';
+      }
+      if (document.getElementById('prWordsTxt')) {
+        document.getElementById('prWordsTxt').textContent = `${wCount}/${WORD_PUZZLES.length}`;
+        document.getElementById('prWordsBar').style.width = `${Math.round((wCount / WORD_PUZZLES.length) * 100)}%`;
+        document.getElementById('prLettersTxt').textContent = `${lCount}/26`;
+        document.getElementById('prLettersBar').style.width = `${Math.round((lCount / 26) * 100)}%`;
+        document.getElementById('prMathTxt').textContent = `${nCount}/10`;
+        document.getElementById('prMathBar').style.width = `${Math.round((nCount / 10) * 100)}%`;
+        document.getElementById('prArtCount').textContent = p.art;
+        document.getElementById('prStoryCount').textContent = p.stories;
+        document.getElementById('prMindCount').textContent = p.mind;
+      }
+    }
+    function updateQuestsUI() {
+      const done = Object.values(state.quests).filter(Boolean).length;
+      document.getElementById('qBadge1').textContent = state.quests.q1 ? '✅' : '⭕';
+      document.getElementById('qBadge2').textContent = state.quests.q2 ? '✅' : '⭕';
+      document.getElementById('qBadge3').textContent = state.quests.q3 ? '✅' : '⭕';
+      document.getElementById('questProgressLabel').textContent = `${done} / 3 Done`;
+    }
+    function addStar(msg) { state.stars += 1; saveState(); updateStarsUI(); playWin(); launchConfetti(); showToast('⭐', msg); }
+
+    function completeQuest(key) {
+      if (state.quests[key]) return;
+      state.quests[key] = true;
+      updateQuestsUI();
+      const done = Object.values(state.quests).filter(Boolean).length;
+      if (done === 3) { state.stars += 2; saveState(); updateStarsUI(); showToast('🏆', 'Adventure Complete! +3 Bonus!'); }
+      else { saveState(); }
+    }
+
+    function switchView(v, fromPop = false) {
+      state.view = v;
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`view-${v}`).classList.remove('hidden');
+      const backBar = document.getElementById('subViewBackBar');
+      if (backBar) backBar.classList.toggle('hidden', v === 'home');
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        const active = b.dataset.view === v;
+        b.className = `nav-btn shrink-0 px-3.5 py-2 rounded-2xl font-bold text-sm flex items-center gap-1.5 border-2 ${active ? 'bg-amber-500 text-white border-amber-600 shadow-sm' : 'bg-white text-slate-700 border-slate-200'}`;
+      });
+      if (!fromPop && v !== 'home') {
+        try { history.pushState({ view: v }, '', '#' + v); } catch (_) {}
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (v === 'wordpuzzle') renderWordPuzzle();
+      if (v === 'art') setTimeout(initArtCanvas, 40);
+      if (v === 'story') renderStory();
+      if (v === 'trace') setTimeout(initTrace, 40);
+      if (v === 'mind') { renderPattern(); renderOdd(); }
+      if (v === 'fruits' && !state.sortItem) loadSort();
+      if (v === 'animals') renderAnimals();
+      if (v === 'shapes') renderShapesAndColors();
+    }
+    window.addEventListener('popstate', () => {
+      const openModal = ['stickersModal', 'parentGateModal', 'parentModal'].find(id => !document.getElementById(id).classList.contains('hidden'));
+      if (openModal) {
+        document.getElementById(openModal).classList.add('hidden');
+        try { history.pushState({ view: state.view }, '', '#' + state.view); } catch (_) {}
+        return;
+      }
+      if (state.view !== 'home') {
+        playPop();
+        switchView('home', true);
+      }
+    });
+
+    // ==================== WORD PUZZLE ====================
+    function renderWordPuzzle() {
+      const wp = WORD_PUZZLES[state.wpIdx % WORD_PUZZLES.length];
+      state.wpProgress = 0;
+      document.getElementById('wpEmoji').textContent = wp.icon;
+      document.getElementById('wpFeedback').textContent = 'Tap the first letter!';
+      document.getElementById('wpNextBtn').classList.add('hidden');
+
+      const slots = document.getElementById('wpSlots'); slots.innerHTML = '';
+      wp.word.split('').forEach((ch, idx) => {
+        const d = document.createElement('div'); d.id = `wpSlot-${idx}`;
+        d.className = 'w-14 h-16 rounded-2xl border-4 border-dashed border-indigo-300 bg-indigo-50 flex items-center justify-center text-3xl font-bold text-indigo-900';
+        d.textContent = ''; slots.appendChild(d);
+      });
+
+      const pool = [...wp.word.split(''), ...wp.extra].sort(() => Math.random() - 0.5);
+      const letters = document.getElementById('wpLetters'); letters.innerHTML = '';
+      pool.forEach(ch => {
+        const b = document.createElement('button'); b.type = 'button';
+        b.className = 'kid-card w-14 h-14 rounded-2xl bg-indigo-500 hover:bg-indigo-600 text-white font-bold text-2xl shadow-md';
+        b.textContent = ch;
+        b.addEventListener('click', () => {
+          const expected = wp.word[state.wpProgress];
+          if (!expected) return;
+          if (ch === expected) {
+            const slot = document.getElementById(`wpSlot-${state.wpProgress}`);
+            slot.textContent = ch;
+            slot.className = 'w-14 h-16 rounded-2xl border-4 border-emerald-500 bg-emerald-100 flex items-center justify-center text-3xl font-bold text-emerald-900 pop-in';
+            b.disabled = true; b.className = 'w-14 h-14 rounded-2xl bg-slate-200 text-slate-400 font-bold text-2xl';
+            state.wpProgress += 1;
+            playPop(); speak(ch);
+            if (state.wpProgress === wp.word.length) {
+              document.getElementById('wpFeedback').textContent = `Yay! You spelled ${wp.word}!`;
+              document.getElementById('wpNextBtn').classList.remove('hidden');
+              if (!state.progress.words.includes(wp.word)) state.progress.words.push(wp.word); completeQuest('q1');
+              setTimeout(() => { addStar(`Spelled ${wp.word}!`); speak(wp.word); }, 350);
+            }
+          } else {
+            b.classList.add('shake-no'); setTimeout(() => b.classList.remove('shake-no'), 350);
+            playOops(); speak('Try another letter!');
+          }
+        });
+        letters.appendChild(b);
+      });
+    }
+
+    // ==================== ART STUDIO ====================
+    let artInitialized = false, artDrawing = false;
+    function initArtCanvas() {
+      const c = document.getElementById('artCanvas'), r = c.parentElement.getBoundingClientRect();
+      if (!r.width || artInitialized) return;
+      c.width = r.width; c.height = r.height; artInitialized = true;
+    }
+    function renderArtTools() {
+      const cr = document.getElementById('artColorRow'); cr.innerHTML = '';
+      ART_COLORS.forEach(col => {
+        const b = document.createElement('button'); b.type = 'button';
+        b.className = `w-8 h-8 rounded-full border-2 ${state.artMode === 'draw' && state.artCol === col ? 'scale-125 border-slate-900 shadow' : 'border-white'}`;
+        b.style.backgroundColor = col;
+        b.addEventListener('click', () => { state.artMode = 'draw'; state.artCol = col; playPop(); renderArtTools(); });
+        cr.appendChild(b);
+      });
+      const sr = document.getElementById('artStampRow'); sr.innerHTML = '';
+      ART_STAMPS.forEach(st => {
+        const b = document.createElement('button'); b.type = 'button';
+        b.className = `w-9 h-9 rounded-xl border-2 text-xl flex items-center justify-center ${state.artMode === 'stamp' && state.artStamp === st ? 'bg-pink-200 border-pink-500 scale-110' : 'bg-white border-pink-100'}`;
+        b.textContent = st;
+        b.addEventListener('click', () => { state.artMode = 'stamp'; state.artStamp = st; playPop(); renderArtTools(); });
+        sr.appendChild(b);
+      });
+    }
+    function setupArtEvents() {
+      const c = document.getElementById('artCanvas'), ctx = c.getContext('2d');
+      const pos = e => { const r = c.getBoundingClientRect(), t = e.touches ? e.touches[0] : e; return { x: t.clientX - r.left, y: t.clientY - r.top }; };
+      const start = e => {
+        e.preventDefault(); const p = pos(e);
+        if (state.artMode === 'stamp') {
+          ctx.font = '44px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(state.artStamp, p.x, p.y); playPop();
+        } else { artDrawing = true; ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+      };
+      const move = e => { if (!artDrawing || state.artMode !== 'draw') return; e.preventDefault(); const p = pos(e); ctx.lineCap = 'round'; ctx.lineWidth = 10; ctx.strokeStyle = state.artCol; ctx.lineTo(p.x, p.y); ctx.stroke(); };
+      const end = () => { artDrawing = false; };
+      c.addEventListener('mousedown', start); c.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+      c.addEventListener('touchstart', start, { passive: false }); c.addEventListener('touchmove', move, { passive: false }); window.addEventListener('touchend', end);
+    }
+
+    // ==================== OTHER MODULES ====================
+    function renderStory() {
+      const curStory = STORIES[state.storyIdx] || STORIES[0];
+      const pages = curStory.pages;
+      if (state.storyPage >= pages.length) state.storyPage = 0;
+      document.getElementById('storyTitle').textContent = curStory.title;
+      const tabs = document.getElementById('storyTabs'); tabs.innerHTML = '';
+      STORIES.forEach((st, idx) => {
+        const tb = document.createElement('button'); tb.type = 'button';
+        tb.className = `kid-card px-3 py-1.5 rounded-xl font-bold text-xs border-2 ${idx === state.storyIdx ? 'bg-rose-500 text-white border-rose-600' : 'bg-white text-slate-700 border-rose-200'}`;
+        tb.textContent = st.title;
+        tb.addEventListener('click', () => { state.storyIdx = idx; state.storyPage = 0; playPop(); renderStory(); });
+        tabs.appendChild(tb);
+      });
+      const p = pages[state.storyPage], sc = document.getElementById('storySceneIcons'); sc.innerHTML = '';
+      p.icons.forEach(ic => { const b = document.createElement('button'); b.type = 'button'; b.className = 'kid-card p-3 rounded-3xl bg-white/80 shadow-sm'; b.textContent = ic.e; b.addEventListener('click', () => { playPop(); speak(ic.s); }); sc.appendChild(b); });
+      document.getElementById('storyCaption').textContent = p.text; document.getElementById('storyPageNum').textContent = `Page ${state.storyPage + 1} of ${pages.length}`;
+    }
+    function renderAbc() {
+      const cur = ABC[state.abcIdx];
+      document.getElementById('abcBigBox').textContent = `${cur.l}${cur.l.toLowerCase()}`; document.getElementById('abcEmoji').textContent = cur.e; document.getElementById('abcWord').textContent = cur.w; document.getElementById('abcPhonics').textContent = cur.p;
+      const g = document.getElementById('abcGrid'); g.innerHTML = '';
+      ABC.forEach((item, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = `kid-card rounded-2xl p-2.5 border-2 flex flex-col items-center ${i === state.abcIdx ? 'bg-sky-500 text-white border-sky-600' : 'bg-white border-sky-100'}`; b.innerHTML = `<span class="text-2xl font-bold">${item.l}</span><span class="text-lg">${item.e}</span>`; b.addEventListener('click', () => { state.abcIdx = i; playPop(); renderAbc(); speak(item.p); }); g.appendChild(b); });
+    }
+    let drawing = false;
+    function initTrace() { const c = document.getElementById('traceCanvas'), r = c.parentElement.getBoundingClientRect(); if (!r.width) return; c.width = r.width; c.height = r.height; drawTraceGuide(); }
+    function drawTraceGuide() {
+      const c = document.getElementById('traceCanvas'), ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+      const l = ABC[state.traceIdx].l; document.getElementById('traceCurrentLabel').textContent = l;
+      ctx.save(); ctx.font = `700 ${Math.floor(c.width * 0.68)}px Fredoka, Inter, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#e2e8f0'; ctx.fillText(l, c.width / 2, c.height / 2 + 8); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 3; ctx.setLineDash([10, 8]); ctx.strokeText(l, c.width / 2, c.height / 2 + 8); ctx.restore();
+    }
+    function renderTracePalette() {
+      const p = document.getElementById('tracePalette'); p.innerHTML = '';
+      ['#0284c7', '#ef4444', '#16a34a', '#9333ea'].forEach(col => { const b = document.createElement('button'); b.type = 'button'; b.className = `w-8 h-8 rounded-full border-2 ${state.traceCol === col ? 'scale-125 border-slate-800' : 'border-white'}`; b.style.backgroundColor = col; b.addEventListener('click', () => { state.traceCol = col; playPop(); renderTracePalette(); }); p.appendChild(b); });
+    }
+    function setupTrace() {
+      const c = document.getElementById('traceCanvas'), ctx = c.getContext('2d');
+      const pos = e => { const r = c.getBoundingClientRect(), t = e.touches ? e.touches[0] : e; return { x: t.clientX - r.left, y: t.clientY - r.top }; };
+      const start = e => { e.preventDefault(); drawing = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+      const move = e => { if (!drawing) return; e.preventDefault(); const p = pos(e); ctx.lineCap = 'round'; ctx.lineWidth = 18; ctx.strokeStyle = state.traceCol; ctx.lineTo(p.x, p.y); ctx.stroke(); };
+      const end = () => { drawing = false; };
+      c.addEventListener('mousedown', start); c.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+      c.addEventListener('touchstart', start, { passive: false }); c.addEventListener('touchmove', move, { passive: false }); window.addEventListener('touchend', end);
+    }
+    function renderNums() {
+      const cur = NUMS.find(x => x.n === state.numSel) || NUMS[0];
+      document.getElementById('numBigBadge').textContent = cur.n; const nw = (getLangPack().numWords && getLangPack().numWords[cur.n - 1]) || cur.w; document.getElementById('numWordTitle').textContent = nw;
+      const area = document.getElementById('numObjectsArea'); area.innerHTML = '';
+      for (let i = 1; i <= cur.n; i++) { const b = document.createElement('button'); b.type = 'button'; b.className = 'kid-card w-16 h-16 rounded-2xl bg-white border-2 border-violet-200 flex flex-col items-center justify-center'; b.innerHTML = `<span class="text-3xl">${cur.e}</span><span class="text-xs font-bold text-violet-700">${i}</span>`; b.addEventListener('click', () => { playPop(); speak(String(i)); }); area.appendChild(b); }
+      const g = document.getElementById('numGrid'); g.innerHTML = '';
+      NUMS.forEach(x => { const b = document.createElement('button'); b.type = 'button'; b.className = `kid-card py-3 rounded-2xl border-2 font-bold text-2xl ${x.n === state.numSel ? 'bg-violet-500 text-white border-violet-600' : 'bg-white border-violet-100'}`; b.textContent = x.n; b.addEventListener('click', () => { state.numSel = x.n; if (!state.progress.numbers.includes(x.n)) { state.progress.numbers.push(x.n); saveState(); updateProgressUI(); } playPop(); renderNums(); speak((getLangPack().numWords && getLangPack().numWords[x.n - 1]) || x.w); }); g.appendChild(b); });
+    }
+    function renderBlocks() {
+      const p = document.getElementById('blockPalette'); p.innerHTML = '';
+      BLOCKS.forEach(b => { const btn = document.createElement('button'); btn.type = 'button'; btn.className = `kid-card w-11 h-11 rounded-xl border-2 text-2xl bg-white ${state.blockSel === b.id ? 'border-cyan-600 ring-4 ring-cyan-200' : 'border-slate-200'}`; btn.textContent = b.icon; btn.addEventListener('click', () => { state.blockSel = b.id; playPop(); renderBlocks(); }); p.appendChild(btn); });
+      const g = document.getElementById('builderGrid'); g.innerHTML = ''; const guide = BLUEPRINTS[state.bp];
+      state.board.forEach((val, idx) => { const cell = document.createElement('button'); cell.type = 'button'; const blk = BLOCKS.find(x => x.id === val), gBlk = guide[idx] ? BLOCKS.find(x => x.id === guide[idx]) : null; if (blk) { cell.className = `kid-card aspect-square rounded-xl border-b-4 text-2xl ${blk.bg}`; cell.textContent = blk.icon; } else if (gBlk) { cell.className = 'kid-card aspect-square rounded-xl border-2 border-dashed border-cyan-300 bg-white/80 text-xl opacity-45'; cell.textContent = gBlk.icon; } else { cell.className = 'kid-card aspect-square rounded-xl border-2 border-sky-100 bg-white/70'; } cell.addEventListener('click', () => { playPop(); state.board[idx] = state.board[idx] ? null : state.blockSel; renderBlocks(); }); g.appendChild(cell); });
+    }
+    function renderPattern() {
+      const q = PATTERNS[state.patIdx]; state.patDone = false; document.getElementById('patternMsg').textContent = 'Tap the missing piece!'; document.getElementById('patternNextBtn').classList.add('hidden');
+      const row = document.getElementById('patternRow'); row.innerHTML = '';
+      q.seq.forEach(x => { const d = document.createElement('div'); d.className = 'w-12 h-12 rounded-xl bg-white border-2 border-amber-200 flex items-center justify-center text-3xl'; d.textContent = x; row.appendChild(d); });
+      const qm = document.createElement('div'); qm.id = 'patQ'; qm.className = 'w-12 h-12 rounded-xl bg-amber-100 border-2 border-dashed border-amber-400 flex items-center justify-center text-2xl font-bold'; qm.textContent = '?'; row.appendChild(qm);
+      const opts = document.getElementById('patternOpts'); opts.innerHTML = '';
+      q.opts.forEach(o => { const b = document.createElement('button'); b.type = 'button'; b.className = 'kid-card bg-white border-4 border-amber-200 rounded-2xl p-4 text-4xl'; b.textContent = o; b.addEventListener('click', () => { if (state.patDone) return; if (o === q.ans) { state.patDone = true; document.getElementById('patQ').textContent = o; document.getElementById('patternMsg').textContent = 'Awesome!'; document.getElementById('patternNextBtn').classList.remove('hidden'); state.progress.mind += 1; addStar('Pattern solved!'); speak('Awesome!'); } else { b.classList.add('shake-no'); setTimeout(() => b.classList.remove('shake-no'), 350); playOops(); speak('Try again!'); } }); opts.appendChild(b); });
+    }
+    function renderOdd() {
+      const q = ODDS[state.oddIdx]; state.oddDone = false; document.getElementById('oddMsg').textContent = 'Which one is different?'; document.getElementById('oddNextBtn').classList.add('hidden');
+      const g = document.getElementById('oddGrid'); g.innerHTML = '';
+      q.items.forEach(it => { const b = document.createElement('button'); b.type = 'button'; b.className = 'kid-card bg-rose-50/40 border-4 border-rose-200 rounded-3xl p-5 flex flex-col items-center gap-1'; b.innerHTML = `<span class="text-5xl">${it.e}</span><span class="font-bold">${it.n}</span>`; b.addEventListener('click', () => { if (state.oddDone) return; if (it.n === q.ans) { state.oddDone = true; b.className = 'kid-card bg-emerald-100 border-4 border-emerald-500 rounded-3xl p-5 flex flex-col items-center gap-1'; document.getElementById('oddMsg').textContent = `Smart! ${it.n}!`; document.getElementById('oddNextBtn').classList.remove('hidden'); state.progress.mind += 1; addStar(`Found ${it.n}!`); speak(`Smart! ${it.n}!`); } else { b.classList.add('shake-no'); setTimeout(() => b.classList.remove('shake-no'), 350); playOops(); speak('Try again!'); } }); g.appendChild(b); });
+    }
+    function initMem() {
+      const pool = [{ id: 'lion', e: '🦁', n: 'Lion' }, { id: 'apple', e: '🍎', n: 'Apple' }, { id: 'almond', e: '🌰', n: 'Almond' }, { id: 'rocket', e: '🚀', n: 'Rocket' }, { id: 'panda', e: '🐼', n: 'Panda' }, { id: 'mango', e: '🥭', n: 'Mango' }, { id: 'frog', e: '🐸', n: 'Frog' }, { id: 'star', e: '⭐', n: 'Star' }];
+      const base = [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
+      state.memCards = [...base, ...base].map((x, i) => ({ ...x, uid: i, flip: false, match: false })).sort(() => Math.random() - 0.5);
+      state.memFlip = []; state.memMatch = 0; state.memLock = false; renderMem();
+    }
+    function renderMem() {
+      const g = document.getElementById('memoryGrid'); g.innerHTML = '';
+      state.memCards.forEach(c => { const b = document.createElement('button'); b.type = 'button'; const show = c.flip || c.match; b.className = `kid-card aspect-square rounded-2xl border-4 flex flex-col items-center justify-center text-4xl font-bold ${c.match ? 'bg-emerald-100 border-emerald-400' : show ? 'bg-white border-purple-400' : 'bg-purple-500 border-purple-600 text-white'}`; b.innerHTML = show ? `<span>${c.e}</span><span class="text-xs text-slate-700">${c.n}</span>` : '❓'; b.addEventListener('click', () => { if (state.memLock || c.flip || c.match) return; playPop(); c.flip = true; state.memFlip.push(c); renderMem(); if (state.memFlip.length === 2) { const [a, d] = state.memFlip; if (a.id === d.id) { a.match = d.match = true; state.memFlip = []; state.memMatch++; speak(a.n); renderMem(); if (state.memMatch === 3) { state.progress.mind += 1; setTimeout(() => addStar('All matched!'), 250); } } else { state.memLock = true; setTimeout(() => { a.flip = d.flip = false; state.memFlip = []; state.memLock = false; renderMem(); }, 700); } } }); g.appendChild(b); });
+    }
+    function renderFruitsAndDry() {
+      const fp = document.getElementById('fruitsListPanel'); fp.innerHTML = '';
+      FRUITS.forEach((f, idx) => { const fname = (getLangPack().fruits && getLangPack().fruits[idx]) || f.name; const b = document.createElement('button'); b.type = 'button'; b.className = 'kid-card bg-white rounded-3xl border-2 border-rose-200 p-4 flex flex-col items-center gap-1'; b.innerHTML = `<span class="text-5xl">${f.icon}</span><span class="text-lg font-bold">${fname}</span>`; b.addEventListener('click', () => { playPop(); speak(fname); }); fp.appendChild(b); });
+      const dp = document.getElementById('dryListPanel'); dp.innerHTML = '';
+      DRY_FRUITS.forEach((d, idx) => { const dname = (getLangPack().dryFruits && getLangPack().dryFruits[idx]) || d.name; const b = document.createElement('button'); b.type = 'button'; b.className = 'kid-card bg-white rounded-3xl border-2 border-amber-200 p-4 flex flex-col items-center gap-1'; b.innerHTML = `<span class="text-5xl">${d.icon}</span><span class="text-lg font-bold">${dname}</span>`; b.addEventListener('click', () => { playPop(); speak(dname); }); dp.appendChild(b); });
+    }
+    function loadSort() { const all = [...FRUITS, ...DRY_FRUITS]; state.sortItem = all[Math.floor(Math.random() * all.length)]; document.getElementById('sortIcon').textContent = state.sortItem.icon; document.getElementById('sortName').textContent = state.sortItem.name; }
+    let aniQuizAns = null, shpQuizAns = null;
+    function renderAnimals() {
+      const g = document.getElementById('aniLearnGrid'); g.innerHTML = '';
+      ANIMALS.forEach((a, idx) => { const aname = (getLangPack().animals && getLangPack().animals[idx]) || a.n;
+        const b = document.createElement('button'); b.type = 'button';
+        b.className = 'kid-card bg-white rounded-3xl border-2 border-lime-200 p-4 flex flex-col items-center gap-1';
+        b.innerHTML = `<span class="text-5xl">${a.e}</span><span class="text-lg font-bold">${aname}</span><span class="text-xs font-ui text-slate-500">${a.s}</span>`;
+        b.addEventListener('click', () => { playPop(); speak(`${aname}, ${a.s}`); });
+        g.appendChild(b);
+      });
+    }
+    function loadAniQuiz() {
+      const opts = [...ANIMALS].sort(() => Math.random() - 0.5).slice(0, 3);
+      aniQuizAns = opts[Math.floor(Math.random() * opts.length)];
+      document.getElementById('aniQuizPrompt').textContent = `"${aniQuizAns.s}"`;
+      const og = document.getElementById('aniQuizOpts'); og.innerHTML = '';
+      opts.forEach(o => {
+        const b = document.createElement('button'); b.type = 'button';
+        b.className = 'kid-card bg-white border-4 border-lime-200 rounded-2xl p-4 flex flex-col items-center gap-1';
+        b.innerHTML = `<span class="text-5xl">${o.e}</span><span class="text-sm font-bold">${o.n}</span>`;
+        b.addEventListener('click', () => {
+          if (o.n === aniQuizAns.n) { state.progress.mind += 1; addStar(`${o.n} says ${o.s}`); loadAniQuiz(); }
+          else { b.classList.add('shake-no'); setTimeout(() => b.classList.remove('shake-no'), 350); playOops(); speak('Try again!'); }
+        });
+        og.appendChild(b);
+      });
+    }
+    function renderShapesAndColors() {
+      const sg = document.getElementById('shpShapesGrid'); sg.innerHTML = '';
+      SHAPES.forEach((s, idx) => { const sname = (getLangPack().shapes && getLangPack().shapes[idx]) || s.n;
+        const b = document.createElement('button'); b.type = 'button';
+        b.className = 'kid-card bg-white rounded-3xl border-2 border-teal-200 p-4 flex flex-col items-center gap-1';
+        b.innerHTML = `<span class="text-5xl">${s.e}</span><span class="text-lg font-bold">${sname}</span><span class="text-xs font-ui text-slate-500">${s.d}</span>`;
+        b.addEventListener('click', () => { playPop(); speak(sname); });
+        sg.appendChild(b);
+      });
+      const cg = document.getElementById('shpColorsGrid'); cg.innerHTML = '';
+      COLORS_LIST.forEach((c, idx) => { const cname = (getLangPack().colors && getLangPack().colors[idx]) || c.n;
+        const b = document.createElement('button'); b.type = 'button';
+        b.className = 'kid-card bg-white rounded-3xl border-2 border-teal-200 p-4 flex flex-col items-center gap-2';
+        b.innerHTML = `<span class="w-12 h-12 rounded-2xl shadow-inner flex items-center justify-center text-2xl" style="background:${c.hex}">${c.e}</span><span class="text-lg font-bold">${cname}</span>`;
+        b.addEventListener('click', () => { playPop(); speak(cname); });
+        cg.appendChild(b);
+      });
+    }
+    function loadShpQuiz() {
+      const opts = [...SHAPES].sort(() => Math.random() - 0.5).slice(0, 3);
+      shpQuizAns = opts[Math.floor(Math.random() * opts.length)];
+      document.getElementById('shpQuizTargetName').textContent = shpQuizAns.n;
+      speak(`Find the ${shpQuizAns.n}!`);
+      const og = document.getElementById('shpQuizOpts'); og.innerHTML = '';
+      opts.forEach(o => {
+        const b = document.createElement('button'); b.type = 'button';
+        b.className = 'kid-card bg-white border-4 border-teal-200 rounded-2xl p-5 text-5xl';
+        b.textContent = o.e;
+        b.addEventListener('click', () => {
+          if (o.n === shpQuizAns.n) { state.progress.mind += 1; addStar(`Found ${o.n}!`); loadShpQuiz(); }
+          else { b.classList.add('shake-no'); setTimeout(() => b.classList.remove('shake-no'), 350); playOops(); speak('Try again!'); }
+        });
+        og.appendChild(b);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if ('speechSynthesis' in window) { loadVoice(); if (window.speechSynthesis.addEventListener) window.speechSynthesis.addEventListener('voiceschanged', loadVoice); }
+      updateStarsUI(); updateQuestsUI(); renderNums(); renderFruitsAndDry(); renderAnimals(); renderShapesAndColors(); applyLanguage(); renderArtTools(); setupArtEvents(); renderAbc(); renderTracePalette(); setupTrace(); renderBlocks(); initMem(); switchView('home');
+      ['headerLangSelect', 'welcomeLangSelect', 'parentLangSelect'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', (e) => {
+          state.lang = e.target.value;
+          saveState();
+          applyLanguage();
+          playPop();
+        });
+      });
+      document.getElementById('speechRateSelect').value = String(state.speechRate);
+      document.getElementById('themeModeSelect').value = state.theme || 'pastel';
+      document.getElementById('parentChildName').value = state.childName || '';
+      document.getElementById('parentChildAge').value = state.childAge || '3';
+
+      let wAge = state.childAge || '3', wTheme = state.theme || 'pastel';
+      if (!state.childName) {
+        document.getElementById('welcomeModal').classList.remove('hidden');
+      }
+      document.querySelectorAll('.age-opt').forEach(btn => btn.addEventListener('click', () => {
+        wAge = btn.dataset.age;
+        document.querySelectorAll('.age-opt').forEach(b => b.className = b === btn ? 'age-opt py-2 rounded-xl border-2 border-amber-500 bg-amber-100 text-amber-900 font-bold text-sm' : 'age-opt py-2 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-bold text-sm');
+      }));
+      document.querySelectorAll('.theme-opt').forEach(btn => btn.addEventListener('click', () => {
+        wTheme = btn.dataset.theme;
+        state.theme = wTheme;
+        applyThemeAndGreeting();
+        document.querySelectorAll('.theme-opt').forEach(b => b.classList.toggle('ring-2', b === btn));
+      }));
+      document.getElementById('welcomeStartBtn').addEventListener('click', () => {
+        const nameVal = document.getElementById('welcomeNameInput').value.trim();
+        if (!nameVal) { document.getElementById('welcomeError').classList.remove('hidden'); return; }
+        state.childName = nameVal;
+        state.childAge = wAge;
+        state.theme = wTheme;
+        state.speechRate = wAge === '3' ? 0.72 : (wAge === '4' ? 0.88 : 1.05);
+        document.getElementById('speechRateSelect').value = String(state.speechRate);
+        document.getElementById('themeModeSelect').value = state.theme;
+        document.getElementById('parentChildName').value = state.childName;
+        document.getElementById('parentChildAge').value = state.childAge;
+        saveState(); applyThemeAndGreeting();
+        document.getElementById('welcomeModal').classList.add('hidden');
+        playWin(); speak(`Welcome ${state.childName}! Let us play and learn!`);
+      });
+
+      document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => { playPop(); switchView(b.dataset.view); }));
+      document.querySelectorAll('.jump-card').forEach(b => b.addEventListener('click', () => { playPop(); switchView(b.dataset.jump); }));
+      document.getElementById('homeBtn').addEventListener('click', () => { playPop(); switchView('home'); });
+      document.getElementById('subViewBackBtn').addEventListener('click', () => { playPop(); switchView('home'); });
+      document.getElementById('aniTabLearn').addEventListener('click', () => { document.getElementById('aniLearnGrid').classList.remove('hidden'); document.getElementById('aniQuizPanel').classList.add('hidden'); });
+      document.getElementById('aniTabQuiz').addEventListener('click', () => { document.getElementById('aniLearnGrid').classList.add('hidden'); document.getElementById('aniQuizPanel').classList.remove('hidden'); loadAniQuiz(); });
+      document.getElementById('aniQuizSpeakBtn').addEventListener('click', () => { if (aniQuizAns) speak(aniQuizAns.s); });
+      document.getElementById('shpTabShapes').addEventListener('click', () => { document.getElementById('shpShapesGrid').classList.remove('hidden'); document.getElementById('shpColorsGrid').classList.add('hidden'); document.getElementById('shpQuizPanel').classList.add('hidden'); });
+      document.getElementById('shpTabColors').addEventListener('click', () => { document.getElementById('shpShapesGrid').classList.add('hidden'); document.getElementById('shpColorsGrid').classList.remove('hidden'); document.getElementById('shpQuizPanel').classList.add('hidden'); });
+      document.getElementById('shpTabQuiz').addEventListener('click', () => { document.getElementById('shpShapesGrid').classList.add('hidden'); document.getElementById('shpColorsGrid').classList.add('hidden'); document.getElementById('shpQuizPanel').classList.remove('hidden'); loadShpQuiz(); });
+
+      function triggerLeo() {
+        const lp = getLangPack();
+        let line = LEO_LINES[Math.floor(Math.random() * LEO_LINES.length)];
+        if (state.lang !== 'en') {
+          line = state.childName && lp.leoGreet ? lp.leoGreet.replace('{name}', state.childName) : (lp.leoDefault || line);
+        }
+        document.getElementById('leoSpeechText').textContent = line; playPop(); speak(line);
+      }
+      document.getElementById('leoBuddyBtn').addEventListener('click', triggerLeo);
+      document.getElementById('leoSpeakPromptBtn').addEventListener('click', triggerLeo);
+
+      document.getElementById('dailyGiftBtn').addEventListener('click', () => {
+        if (state.giftClaimed) { showToast('🎁', 'Already opened today!'); speak('Come back tomorrow!'); return; }
+        state.giftClaimed = true; state.stars += 1; addStar('Daily Gift: +2 Stars!'); speak('Yay! Daily gift!');
+      });
+
+      document.getElementById('wpSpeakBtn').addEventListener('click', () => speak(WORD_PUZZLES[state.wpIdx % WORD_PUZZLES.length].word));
+      document.getElementById('wpNextBtn').addEventListener('click', () => { state.wpIdx += 1; playPop(); renderWordPuzzle(); });
+
+      document.getElementById('artClearBtn').addEventListener('click', () => { const c = document.getElementById('artCanvas'); c.getContext('2d').clearRect(0, 0, c.width, c.height); playPop(); });
+      document.getElementById('artDoneBtn').addEventListener('click', () => { state.progress.art += 1; completeQuest('q3'); addStar('Awesome artwork!'); speak('Beautiful art!'); });
+
+      document.getElementById('storyReadBtn').addEventListener('click', () => speak(STORIES[state.storyIdx].pages[state.storyPage].text));
+      document.getElementById('storyPrevBtn').addEventListener('click', () => { const len = STORIES[state.storyIdx].pages.length; state.storyPage = (state.storyPage - 1 + len) % len; playPop(); renderStory(); });
+      document.getElementById('storyNextBtn').addEventListener('click', () => { const len = STORIES[state.storyIdx].pages.length; state.storyPage = (state.storyPage + 1) % len; playPop(); renderStory(); if (state.storyPage === len - 1) { state.progress.stories += 1; addStar('Story complete!'); } });
+
+      document.getElementById('soundToggleBtn').addEventListener('click', e => { state.soundEnabled = !state.soundEnabled; e.currentTarget.textContent = state.soundEnabled ? '🔊' : '🔇'; if (state.soundEnabled) playPop(); else if ('speechSynthesis' in window) window.speechSynthesis.cancel(); });
+      document.getElementById('abcSpeakBtn').addEventListener('click', () => speak(ABC[state.abcIdx].p));
+      document.getElementById('tracePrevBtn').addEventListener('click', () => { state.traceIdx = (state.traceIdx - 1 + ABC.length) % ABC.length; playPop(); drawTraceGuide(); speak(ABC[state.traceIdx].l); });
+      document.getElementById('traceNextBtn').addEventListener('click', () => { state.traceIdx = (state.traceIdx + 1) % ABC.length; playPop(); drawTraceGuide(); speak(ABC[state.traceIdx].l); });
+      document.getElementById('traceClearBtn').addEventListener('click', () => { playPop(); drawTraceGuide(); });
+      document.getElementById('traceDoneBtn').addEventListener('click', () => { const trL = ABC[state.traceIdx].l; if (!state.progress.letters.includes(trL)) state.progress.letters.push(trL); completeQuest('q2'); addStar(`Traced ${ABC[state.traceIdx].l}!`); });
+      document.getElementById('numCountAloudBtn').addEventListener('click', () => {
+        const nwList = getLangPack().numWords;
+        const words = nwList ? nwList.slice(0, state.numSel) : Array.from({ length: state.numSel }, (_, i) => i + 1);
+        speak(words.join(', '));
+      });
+
+      document.querySelectorAll('.bp-btn').forEach(b => b.addEventListener('click', () => { state.bp = b.dataset.bp; state.board = Array(30).fill(null); playPop(); document.querySelectorAll('.bp-btn').forEach(x => x.className = x === b ? 'bp-btn kid-card px-3 py-1.5 rounded-xl font-bold text-sm border-2 bg-cyan-500 text-white border-cyan-600' : 'bp-btn kid-card px-3 py-1.5 rounded-xl font-bold text-sm border-2 bg-white text-slate-700 border-slate-200'); renderBlocks(); }));
+      document.getElementById('blockClearBtn').addEventListener('click', () => { state.board = Array(30).fill(null); playPop(); renderBlocks(); });
+      document.getElementById('blockFinishBtn').addEventListener('click', () => { if (state.board.filter(Boolean).length < 3) { showToast('🧱', 'Place 3+ blocks!'); return; } addStar('Great building!'); });
+
+      document.getElementById('mindTabPattern').addEventListener('click', () => { document.getElementById('mindPatternPanel').classList.remove('hidden'); document.getElementById('mindOddPanel').classList.add('hidden'); document.getElementById('mindMemoryPanel').classList.add('hidden'); });
+      document.getElementById('mindTabOdd').addEventListener('click', () => { document.getElementById('mindPatternPanel').classList.add('hidden'); document.getElementById('mindOddPanel').classList.remove('hidden'); document.getElementById('mindMemoryPanel').classList.add('hidden'); });
+      document.getElementById('mindTabMemory').addEventListener('click', () => { document.getElementById('mindPatternPanel').classList.add('hidden'); document.getElementById('mindOddPanel').classList.add('hidden'); document.getElementById('mindMemoryPanel').classList.remove('hidden'); });
+      document.getElementById('patternNextBtn').addEventListener('click', () => { state.patIdx = (state.patIdx + 1) % PATTERNS.length; renderPattern(); });
+      document.getElementById('oddNextBtn').addEventListener('click', () => { state.oddIdx = (state.oddIdx + 1) % ODDS.length; renderOdd(); });
+      document.getElementById('memoryRestartBtn').addEventListener('click', initMem);
+
+      document.getElementById('subFreshBtn').addEventListener('click', () => { document.getElementById('fruitsListPanel').classList.remove('hidden'); document.getElementById('dryListPanel').classList.add('hidden'); document.getElementById('fruitSortPanel').classList.add('hidden'); });
+      document.getElementById('subDryBtn').addEventListener('click', () => { document.getElementById('fruitsListPanel').classList.add('hidden'); document.getElementById('dryListPanel').classList.remove('hidden'); document.getElementById('fruitSortPanel').classList.add('hidden'); });
+      document.getElementById('subSortBtn').addEventListener('click', () => { document.getElementById('fruitsListPanel').classList.add('hidden'); document.getElementById('dryListPanel').classList.add('hidden'); document.getElementById('fruitSortPanel').classList.remove('hidden'); loadSort(); });
+      document.getElementById('sortFreshBtn').addEventListener('click', () => { if (state.sortItem && state.sortItem.type === 'fresh') { addStar(state.sortItem.name); loadSort(); } else { playOops(); speak('Try dry fruit!'); } });
+      document.getElementById('sortDryBtn').addEventListener('click', () => { if (state.sortItem && state.sortItem.type === 'dry') { addStar(state.sortItem.name); loadSort(); } else { playOops(); speak('Try fresh fruit!'); } });
+
+      document.getElementById('openStickersBtn').addEventListener('click', () => {
+        const g = document.getElementById('stickersGrid'); g.innerHTML = '';
+        STICKERS.forEach(st => { const ok = state.stars >= st.req; const d = document.createElement('div'); d.className = `rounded-2xl p-3 border-2 flex flex-col items-center text-center ${ok ? 'bg-amber-50 border-amber-300' : 'bg-slate-100 border-slate-200 opacity-60'}`; d.innerHTML = `<span class="text-4xl ${ok ? '' : 'grayscale'}">${st.icon}</span><span class="text-sm font-bold">${st.name}</span><span class="text-xs font-ui">${ok ? 'Unlocked!' : `Need ${st.req} ⭐`}</span>`; g.appendChild(d); });
+        document.getElementById('stickersModal').classList.remove('hidden');
+      });
+      document.getElementById('closeStickersBtn').addEventListener('click', () => document.getElementById('stickersModal').classList.add('hidden'));
+
+      document.getElementById('openParentGateBtn').addEventListener('click', () => {
+        const a = 2 + Math.floor(Math.random() * 6), b = 2 + Math.floor(Math.random() * 5); state.gateAns = a + b;
+        document.getElementById('gateQuestion').textContent = `What is ${a} + ${b}?`; document.getElementById('gateInput').value = ''; document.getElementById('gateError').classList.add('hidden');
+        document.getElementById('parentGateModal').classList.remove('hidden');
+      });
+      document.getElementById('closeGateBtn').addEventListener('click', () => document.getElementById('parentGateModal').classList.add('hidden'));
+      document.getElementById('gateSubmitBtn').addEventListener('click', () => {
+        if (parseInt(document.getElementById('gateInput').value, 10) === state.gateAns) { document.getElementById('parentGateModal').classList.add('hidden'); updateStarsUI(); document.getElementById('parentModal').classList.remove('hidden'); }
+        else { document.getElementById('gateError').classList.remove('hidden'); }
+      });
+      document.getElementById('closeParentBtn').addEventListener('click', () => document.getElementById('parentModal').classList.add('hidden'));
+      document.getElementById('saveParentBtn').addEventListener('click', () => {
+        const nm = document.getElementById('parentChildName').value.trim();
+        if (nm) state.childName = nm;
+        state.childAge = document.getElementById('parentChildAge').value || '3';
+        state.speechRate = parseFloat(document.getElementById('speechRateSelect').value) || 0.88;
+        state.theme = document.getElementById('themeModeSelect').value || 'pastel';
+        saveState(); applyThemeAndGreeting();
+        document.getElementById('parentModal').classList.add('hidden'); showToast('⚙️', 'Saved');
+      });
+      document.getElementById('openWelcomeFromParentBtn').addEventListener('click', () => {
+        document.getElementById('parentModal').classList.add('hidden');
+        document.getElementById('welcomeNameInput').value = state.childName || '';
+        document.getElementById('welcomeError').classList.add('hidden');
+        document.getElementById('welcomeModal').classList.remove('hidden');
+      });
+      document.getElementById('copyReportBtn').addEventListener('click', () => {
+        const p = state.progress;
+        const nm = state.childName || 'Little Genius';
+        const txt = `📊 ${nm} (Age ${state.childAge}) - Little Genius Progress\n⭐ Stars: ${state.stars}\n🧩 Words Spelled: ${p.words.length}/${WORD_PUZZLES.length}\n✏️ Letters Traced: ${p.letters.length}/26\n🔢 Numbers Practiced: ${p.numbers.length}/10\n🎨 Artworks: ${p.art} | 📖 Stories: ${p.stories} | 🧠 Puzzles: ${p.mind}`;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(() => showToast('📋', 'Report copied!')).catch(() => showToast('📋', 'Copied!'));
+        } else { showToast('📋', 'Report ready!'); }
+      });
+      document.getElementById('resetProgressBtn').addEventListener('click', () => { state.stars = 0; state.giftClaimed = false; state.quests = { q1: false, q2: false, q3: false }; state.progress = { words: [], letters: [], numbers: [], art: 0, stories: 0, mind: 0 }; saveState(); updateStarsUI(); updateQuestsUI(); showToast('🔄', 'Reset done'); });
+    });
+  </script>
+</body>
+</html>
