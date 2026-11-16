@@ -1,1 +1,60 @@
 
+name: Build Android APK & AAB
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Prepare Web Files & Add Android
+        run: |
+          mkdir -p www
+          cp -f index.html icon-192.png icon-512.png privacy.html www/ 2>/dev/null || true
+          npm install
+          npx cap add android
+          npx cap sync android
+
+      - name: Apply App Icon
+        run: |
+          for d in android/app/src/main/res/mipmap-*; do
+            if [ -f "$d/ic_launcher.png" ]; then cp www/icon-512.png "$d/ic_launcher.png"; fi
+            if [ -f "$d/ic_launcher_round.png" ]; then cp www/icon-512.png "$d/ic_launcher_round.png"; fi
+          done
+
+      - name: Build Debug APK & Release AAB
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug bundleRelease
+
+      - name: Sign Release AAB
+        run: |
+          keytool -genkey -v -keystore release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias littlegenius -storepass LittleGenius123 -keypass LittleGenius123 -dname "CN=Little Genius, O=LittleGenius, C=IN"
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore release-key.jks -storepass LittleGenius123 -keypass LittleGenius123 android/app/build/outputs/bundle/release/app-release.aab littlegenius
+
+      - name: Upload APK, AAB & Keystore
+        uses: actions/upload-artifact@v4
+        with:
+          name: Little-Genius-Android-Build
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/bundle/release/app-release.aab
+            release-key.jks
