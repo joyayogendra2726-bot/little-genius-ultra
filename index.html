@@ -2658,7 +2658,23 @@ window.I18N = {
     function playWin() { playTone(523, 0.12, 'triangle', 0); playTone(659, 0.12, 'triangle', 0.1); playTone(784, 0.16, 'triangle', 0.2); playTone(1046, 0.26, 'triangle', 0.32); }
     function playOops() { playTone(270, 0.14, 'sine', 0); playTone(230, 0.18, 'sine', 0.12); }
     function speak(text) {
-      if (!state.soundEnabled) return;
+      if (!state.soundEnabled || !text) return;
+      const ttsLang = getLangPack().tts || 'en-US';
+      const capTTS = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.TextToSpeech;
+      if (capTTS && typeof capTTS.speak === 'function') {
+        Promise.resolve()
+          .then(() => capTTS.stop ? capTTS.stop().catch(() => {}) : null)
+          .then(() => capTTS.speak({
+            text: String(text),
+            lang: ttsLang,
+            rate: state.speechRate || 0.88,
+            pitch: 1.05,
+            volume: 1.0,
+            category: 'ambient'
+          }))
+          .catch(() => playPop());
+        return;
+      }
       if (!('speechSynthesis' in window)) { playPop(); return; }
       try {
         if (speakTimer) clearTimeout(speakTimer);
