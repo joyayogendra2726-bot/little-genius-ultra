@@ -30,6 +30,7 @@ jobs:
           npm install
           npx cap add android
           npx cap sync android
+          sed -i 's/minSdkVersion = 23/minSdkVersion = 24/g' android/variables.gradle
 
       - name: Apply App Icon
         run: |
